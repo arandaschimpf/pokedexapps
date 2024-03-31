@@ -19,17 +19,17 @@ export const getPokemonList = async () => {
 }
 
 export const addPokemon = async (pokemon: Pokemon) => {
+  console.log("Help: ", pokemon)
   if (pokemonList.some((p) => p.id === pokemon.id)) {
     throw new Error('Pokemon already exists')
   }
   pokemonList.push(pokemon)
   return pokemon
 }
-
-export const deletePokemon = async (pokemonId: number) => {
+  export const deletePokemon = async (pokemonId: number) => {
   const index = pokemonList.findIndex((pokemon) => pokemon.id === pokemonId)
   if (index === -1) {
     throw new Error('Pokemon not found')
   }
   return pokemonList.splice(index, 1)[0]
-}
+  }
