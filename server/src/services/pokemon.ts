@@ -19,6 +19,7 @@ export const getPokemonList = async () => {
 }
 
 export const addPokemon = async (pokemon: Pokemon) => {
+  console.log("Help: ", pokemon)
   if (pokemonList.some((p) => p.id === pokemon.id)) {
     throw new Error('Pokemon already exists')
   }
