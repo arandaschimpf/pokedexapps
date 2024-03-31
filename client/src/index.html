@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokedex</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap"
+      rel="stylesheet"
+    /> 
+    <title>Pokedex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <main class="container mx-auto flex flex-col">
-		<h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
-		<form action="/api/pokemon" method="post">
-			<h2 class="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
-			<input type="number" name="id" placeholder="ID" class="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<input type="text" name="name" placeholder="Name" class="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<button type="submit" class="w-full p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-red-700">Agregar</button>
-		</form>
-		<ul class="mt-4 border-4 border-red-700">
-			<li class="flex items-center justify-between border-b border-gray-300 p-2 bg-red-700">
-				<span class="text-lg text-white font-extrabold w-1/3">ID</span>
-				<span class="text-lg text-white font-extrabold w-1/3 text-center">Name</span>
-				<span class="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
-			</li>
-		</ul>
-	</main>
+<body class="relative h-screen overflow-auto min-w-[400px] mx-auto" style="font-family: 'Inconsolata', sans-serif;">
+    <!-- Fondo de la página sin filtro de brillo -->
+    <div class="absolute inset-0 bg-center bg-auto bg-repeat h-screen overflow-auto" style="background-image: url('images/fondopokemon.webp');"></div>
+    <!-- Contenedor principal -->
+    <div id="page" class="relative z-10 overflow-auto h-screen">
+        <!-- Contenido principal -->
+        <main class="container mx-auto flex flex-col pb-5">
+            <!-- Logo del Pokedex -->
+            <img class="pb-6 pt-6 w-3/5 h-auto block mx-auto " src="images/pokebola.png" alt="logo" />
+            <!-- Formulario para agregar un nuevo pokemon -->
+            <form id="add-pokemon">
+                <div class="mx-auto w-4/5 p-4">
+                    <!-- Cambiado: Se cambió el fondo a blanco -->
+                    <h2 class="text-2xl text-red-700 font-bold bg-white p-2 rounded-lg">Agregar nuevo pokemon</h2>
+                    <input type="number" name="id" placeholder="ID" class="my-1 w-full p-2 border border-gray-300 rounded-lg" min="1" required />
+                    <input type="text" name="name" placeholder="Name" class="my-1 w-full p-2 border border-gray-300 rounded-lg" maxlength="15" minlength="3" required />
+                    <button type="submit" class="w-full p-2 bg-[#B91C1C] text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-white">Agregar</button>
+                </div>
+            </form>
+            <!-- Lista de pokemons -->
+            <ul id="list-container" class="mt-4 border-4 border-[#B91C1C] mx-auto w-4/5">
+                <li class="flex items-center justify-between border-b border-[#B91C1C] p-2 bg-[#B91C1C]">
+                    <span class="text-lg text-white font-extrabold w-1/3">ID</span>
+                    <span class="text-lg text-white font-extrabold w-1/3 text-center">Name</span>
+                    <span class="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
+                </li>
+            </ul>
+        </main>
+        <!-- Script para funcionalidad del cliente -->
+        <script src="client.js"></script>
+    </div>
 </body>
 </html>

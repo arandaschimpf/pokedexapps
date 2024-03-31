@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "../../astroproject"
+		},
+		{
+			"path": "../../Tarea-18-3"
+		},
+		{
+			"name": "pokedexapps",
+			"path": "../../pokedeapps/pokedexapps"
+		}
+	],
+	"settings": {}
+}
