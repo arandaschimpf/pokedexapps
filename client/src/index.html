@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokedex</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="pokemonService.js"></script>
 </head>
 <body>
+	<script type="module" src="pokemonService.js"></script>
   <main class="container mx-auto flex flex-col">
 		<h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
-		<form action="/api/pokemon" method="post">
+		<form action="/api/pokemon" method="post" id="formAction">
 			<h2 class="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
 			<input type="number" name="id" placeholder="ID" class="my-1 w-full p-2 border border-gray-300 rounded-lg" />
 			<input type="text" name="name" placeholder="Name" class="my-1 w-full p-2 border border-gray-300 rounded-lg" />
@@ -23,5 +28,8 @@
 			</li>
 		</ul>
 	</main>
+	<script>
+
+	</script>
 </body>
 </html>
