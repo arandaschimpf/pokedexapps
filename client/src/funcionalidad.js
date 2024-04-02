@@ -3,6 +3,7 @@ fetch('http://localhost:4321/api/pokemon.json', {method: 'GET'}).then( response 
     for (let pokemon of data.pokemonList){
         // llamar a la funcion que genera los pokemones iniciales
         addPokeLine(pokemon)
+        
     }
 })
 
