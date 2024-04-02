@@ -12,6 +12,7 @@ const pokemonList: Pokemon[] = [
   { id: 7, name: 'Squirtle' },
   { id: 8, name: 'Wartortle' },
   { id: 9, name: 'Blastoise' },
+  { id: 10, name: 'Messi' },
 ]
 
 export const getPokemonList = async () => {
