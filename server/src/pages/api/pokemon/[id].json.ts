@@ -1,10 +1,30 @@
 import type { APIRoute } from "astro";
+import { deletePokemon } from "../../../services/pokemon";
 
 export const DELETE: APIRoute = async (context) => {
-  return new Response(null, {
-    headers: {
-      'content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+  try {
+    const IdPokemon = context.params.id;
+
+    if (!IdPokemon || isNaN(parseInt(IdPokemon))) {
+      throw new Error('Invalid Pokemon ID');
     }
-  })
+
+    await deletePokemon(parseInt(IdPokemon));
+
+    return new Response(JSON.stringify({ message: 'Pokemon deleted successfully' }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      status: 200
+    });
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      status: 400
+    });
+  }
 }
