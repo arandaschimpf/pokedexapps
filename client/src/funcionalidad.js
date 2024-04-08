@@ -35,7 +35,7 @@ const addPokeLine = (pokemon) => {
 }
 
 document.getElementById("pokeAdding").addEventListener("submit", async (event) => {
-    event.preventDefault();
+   // event.preventDefault();
 
     // crear un nuevo objeto FormData que representa el formulario
     const formData = new FormData(event.target);

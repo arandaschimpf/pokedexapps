@@ -14,7 +14,9 @@ const pokemonList: Pokemon[] = [
   { id: 9, name: 'Blastoise' },
 ]
 
-export const getPokemonList = async () => {
+export const getPokemonList = async (page = 1) => {
+  //if(!page){return pokemonList}
+  //return pokemonList.slice((page-1)*5, page*5 )
   return pokemonList
 }
 
