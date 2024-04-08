@@ -24,4 +24,74 @@
 		</ul>
 	</main>
 </body>
+
+<script>
+	function renderPokemon(pokemon) {
+		const ul = document.querySelector('ul');
+		const li = document.createElement('li');
+		li.classList.add('flex', 'items-center', 'justify-between', 'border-b', 'border-gray-300', 'p-2');
+		li.innerHTML = `
+			<span class="text-lg w-1/3">${pokemon.id}</span>
+			<span class="text-lg w-1/3 text-center">${pokemon.name}</span>
+			<button class="text-lg w-1/3 text-right text-red-700" onclick="deletePokemon(${pokemon.id})">DELETE</button>
+		`;
+		li.dataset.id = pokemon.id;
+		document.querySelector('ul').appendChild(li);
+		
+	}
+
+	async function populatePokemos(){
+		const response = await fetch('http://localhost:3000/api/pokemon.json');
+		const data = await response.json();
+		data.forEach(renderPokemon)
+	}
+	
+	populatePokemos();
+
+	document.querySelector('form').addEventListener('submit', async (event) => {
+		event.preventDefault();
+		const form = event.target;
+		const data = new FormData(form);
+		const response = await fetch('http://localhost:3000/api/pokemon.json', {
+			method: 'POST',
+			body: data
+		});
+		const pokemon = await response.json();
+		renderPokemon(pokemon);
+		form.reset();
+	});
+
+	const form = document.querySelector('form')?.addEventListener('submit', async(e) => {e.preventDefault();
+		const id = e.target.id.value;
+		const data = new FormData(e.target);
+		fetch('http://localhost:3000/api/pokemon.json', {
+			method: 'POST',
+			body: JSON.stringify(pokemon),
+		})
+
+		document.querySelector('ul').addEventListener('click', async (e) => {
+			if (e.target.tagName === 'BUTTON') {
+				const id = e.target.parentElement.querySelector('span').textContent;
+				await fetch(`http://localhost:3000/api/pokemon/${id}.json`, {
+					method: 'DELETE'
+				});
+				if (response.ok) {
+					e.target.parentElement.remove();
+				}
+			}
+		});
+
+		document.querySelector('.next').addEventListener('click', async() => {
+			const response = await fetch('http://localhost:3000/api/pokemon.json?page=${++page}');
+			const data = await response.json();
+			document.querySelector('ul').innerHTML = '';
+			
+		})
+	});
+
+
+
+
+</script>
+
 </html>
