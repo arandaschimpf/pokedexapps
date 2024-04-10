@@ -1,3 +1,10 @@
+
+function renderPokemon(pokemon){
+  document.querySelector('.next').addEventListener('click', async e => {
+    
+  })
+}
+
 fetch("http://localhost:4321/api/pokemon.json")
   .then((response) => {
     if (!response.ok) {
@@ -7,6 +14,7 @@ fetch("http://localhost:4321/api/pokemon.json")
   })
   .then((data) => {
     console.log(data);
+    
     for (pokemon of data.pokemonList) {
       createPokemon(pokemon);
     }
@@ -16,7 +24,7 @@ function createPokemon(pokemon) {
   const li = document.createElement("li");
   li.id = `li${pokemon.id}`;
   li.classList =
-    "flex items-center justify-between border-b border-[#484032] p-2 bg-[#ffe5b2]";
+    "flex items-center justify-between border-b border-[#484032] p-2 bg-dark";
   const liContent =
     `<span class="text-lg text-[#484032] font-bold w-1/3 pl-2">${pokemon.id}</span>` +
     `<span class="text-lg text-[#484032] font-bold w-1/3 text-center">${pokemon.name}</span>` +
