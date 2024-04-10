@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+
 type Pokemon = {
   id: number
   name: string
@@ -12,6 +13,8 @@ export default function App() {
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
   const pageCount = Math.ceil(count / 5)
+  const [error,setError] = useState("");
+  // const [body,setbody] = useState({id:"" , name:""})
 
   useEffect(() => {
     let cancelled = false
@@ -33,19 +36,32 @@ export default function App() {
     event.preventDefault()
 
     const form = event.currentTarget
+    console.log(form)
+
     const data = new FormData(form)
+
+    console.log(data)
+
     const pokemon = {
       id: parseInt(data.get('id') as string),
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    const response = await fetch(`${BASE_URL}/pokemon.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(pokemon)
     })
+
+    const json = await response.json();
+
+    if (json.error){
+      alert(json.error)
+      setError(json.error)
+      return;
+    }
 
     form.reset()
     if (page === pageCount && list.length < 5) {
@@ -71,9 +87,17 @@ export default function App() {
     <main className="container mx-auto flex flex-col">
 		<h1 className="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
 		<form action="/api/pokemon" method="post" onSubmit={addPokemon}>
+      {
+        error && (
+          <div className="bg-red-400/70 p-4 rounded my-2 text-white text-xl"> 
+            Error: {error}
+            </div>
+        )
+          // esto va en el input value={body?.id ?? ""}
+      }
 			<h2 className="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
-			<input type="number" name="id" placeholder="ID" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<input type="text" name="name" placeholder="Name" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
+			<input type="number" name="id" placeholder="ID" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />  {/*value={body.id} onChange={(e) => setbody({... body,id: e.target.value})*/}
+			<input type="text" name="name" placeholder="Name" className="my-1 w-full p-2 border border-gray-300 rounded-lg"/> {/*value={body.name}  onChange={(e) => setbody({...body, name: e.target.value})}*/}
 			<button type="submit" className="w-full p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-red-700">Agregar</button>
 		</form>
 		<ul className="mt-4 border-4 border-red-700">
@@ -83,7 +107,7 @@ export default function App() {
 				<span className="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
 			</li>
 			{list.map(pokemon => (
-				<li className="flex items-center justify-between border-b border-gray-300 p-2">
+				<li key={pokemon.id} className="flex items-center justify-between border-b border-gray-300 p-2">
 					<span className="text-lg text-red-600 font-bold w-1/3">{pokemon.id}</span>
 					<span className="text-lg text-red-600 font-bold w-1/3 text-center">{pokemon.name}</span>
 					<div className="w-1/3 text-right">
