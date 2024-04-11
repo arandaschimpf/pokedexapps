@@ -36,11 +36,11 @@ export default function App() {
     event.preventDefault()
 
     const form = event.currentTarget
-    console.log(form)
+    //console.log(form)
 
     const data = new FormData(form)
 
-    console.log(data)
+    //console.log(data)
 
     const pokemon = {
       id: parseInt(data.get('id') as string),
@@ -58,7 +58,7 @@ export default function App() {
     const json = await response.json();
 
     if (json.error){
-      alert(json.error)
+      //alert(json.error)
       setError(json.error)
       return;
     }
@@ -93,7 +93,6 @@ export default function App() {
             Error: {error}
             </div>
         )
-          // esto va en el input value={body?.id ?? ""}
       }
 			<h2 className="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
 			<input type="number" name="id" placeholder="ID" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />  {/*value={body.id} onChange={(e) => setbody({... body,id: e.target.value})*/}

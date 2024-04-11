@@ -3,7 +3,6 @@ import { addPokemon, getPokemonList, findPokemonById ,findPokemonByName } from "
 import { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists } from "../../../helpers/errors"
 
 
-
 // function handleError(error: string, body?: Record<string, any>) {
 //   const headers = new Headers()
 //   headers.append('Location', '/')
@@ -18,7 +17,7 @@ import { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists } from ".
 // }
 
 function handleError(errorType : string, details = {}){
-  return new Response(JSON.stringify(errorType), {
+  return new Response(JSON.stringify({error: errorType}), {
     status: 400,
     headers: {
       'Content-Type': 'application/json',
@@ -42,8 +41,8 @@ export const GET: APIRoute = async (context) => {
 export const POST: APIRoute = async (context) => {
 
   const data = await context.request.json();  
-  const id = parseInt(data.get('id') as string)
-  const name = data.get('name') as string
+  const id = data.id
+  const name = data.name
   
   if (!id || !name) {
     return handleError(invalidInput, { id, name })
