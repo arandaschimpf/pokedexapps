@@ -1,10 +1,12 @@
 // conectar con el servidor
-fetch('http://localhost:4321/api/pokemon.json', {method: 'GET'}).then( response => response.json()).then(data =>{
-    for (let pokemon of data.pokemonList){
-        // llamar a la funcion que genera los pokemones iniciales
+fetch("http://localhost:4321/api/pokemon.json")
+.then(response => response.json())
+.then(data => {
+    console.log(data)
+    data.forEach(pokemon => {
         addPokeLine(pokemon)
-        
-    }
+    });
+    
 })
 
 const addPokeLine = (pokemon) => {
@@ -34,37 +36,27 @@ const addPokeLine = (pokemon) => {
         document.getElementById("pokeContainer").appendChild(pokeLine)
 }
 
-document.getElementById("pokeAdding").addEventListener("submit", async (event) => {
-   // event.preventDefault();
 
-    // crear un nuevo objeto FormData que representa el formulario
-    const formData = new FormData(event.target);
+document.getElementById("formpok").addEventListener("submit", async (event) => {
+    console.log("hola")
 
-    // obtener los valores de los campos del formulario
-    const id = formData.get('id');
-    const name = formData.get('name');
-
-    // crear el objeto Pokemon
-    const newPokemon = { id: parseInt(id), name: name };
-
+    //agarrar los datos del form
+    const formData = new FormData(event.target)
+    const id = Number(formData.get("id"))
+    const name = formData.get("name")
+    //crear un objeto pokemon para poder pasar a 
+    const pokemon = { id: id, name: name }
     // agregar el nuevo pokemon
-    addPokeLine(newPokemon);
-
-    try {
-        // enviar el objeto Pokemon al servidor
-        const response = await fetch('http://localhost:4321/server/api/pokemon.json', {
-            method: 'POST',
-            body: JSON.stringify(newPokemon)
-        });
-
-        // manejo de errores
-        if (!response.ok) {
-            throw new Error('Error al agregar pokemon');
-        }
-
-        const responseData = await response.json()
-
-    } catch (error) {
-        console.error('Error al agregar pokemon:', error);
+    addPokeLine(pokemon)
+    //Cambios en el server
+    fetch("http://localhost:4321/api/pokemon.json", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: id, name}),
+    })
+    .catch (error);{
+    console.error('No se pudo agregar pokemon al servidor:', error)
     }
 });
