@@ -6,7 +6,7 @@ export const GET: APIRoute = async (context) => {
   //EN que pagina estoy parado
   const page = parseInt(context.url.searchParams.get('page') ?? '1', 10);
   return new Response(JSON.stringify({
-    pokemonList: await getPokemonList()
+    pokemonList: await getFivePokemon()
   }), {
     headers: {
       'content-type': 'application/json',
@@ -27,4 +27,8 @@ export const POST: APIRoute = async (context: APIContext) => {
       'Access-Control-Allow-Origin': '*',
     }
   })
+}
+
+function getFivePokemon() {
+  throw new Error("Function not implemented.");
 }
