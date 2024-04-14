@@ -2,7 +2,7 @@
 export default {
   content: [
     'index.hmtl',
-    './src/**/*.{js,ts,jsx,tsx}',
+    './src/*/.{js,ts,jsx,tsx,vue}',
   ],
   theme: {
     extend: {},
