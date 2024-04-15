@@ -6,6 +6,7 @@ import { getPokemonList } from "../services/pokemon";
 const { list } = await getPokemonList();
 const error = Astro.cookies.get("error")?.value;
 
+
 const body = Astro.cookies.get('body')?.json()
 const nameError = error === nameTooLong || error === nameTooShort
 ---
@@ -81,5 +82,6 @@ const nameError = error === nameTooLong || error === nameTooShort
 				))
 			}
 		</ul>
+
 	</main>
 </Layout>

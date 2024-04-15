@@ -1,8 +1,9 @@
 import type { APIRoute } from "astro";
-import { addPokemon, findPokemonById, findPokemonByName } from "../../../services/pokemon";
+import { addPokemon,} from "../../../services/pokemon";
+import {findPokemon, findPokemonByName} from "../../../services/db";
 import { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists } from "../../../helpers/errors";
 
-function handleError(error: string, body?: Record<string, any>) {
+export function handleError(error: string, body?: Record<string, any>) {
   const headers = new Headers()
   headers.append('Location', '/')
   headers.append('Set-Cookie', `error=${error}; SameSite=Strict; Path=/; Max-Age=1`)
@@ -33,7 +34,7 @@ export const POST: APIRoute = async (context) => {
     return handleError(nameTooShort, { id, name })
   }
 
-  if (await findPokemonById(id) || await findPokemonByName(name)) {
+  if (await findPokemon(id) || await findPokemonByName(name)) {
     return handleError(pokemonAlreadyExists, { id, name })
   }
 
@@ -42,3 +43,4 @@ export const POST: APIRoute = async (context) => {
 
   return context.redirect('/')
 }
+
