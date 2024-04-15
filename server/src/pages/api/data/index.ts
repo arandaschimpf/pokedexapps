@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
-import { addPokemon, findPokemonById, findPokemonByName } from "../../../services/pokemon";
-import { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists } from "../../../helpers/errors";
+import { addData, findDataById, findDataByName } from "../../../services/data";
+import { invalidInput, nameTooLong, nameTooShort, dataAlreadyExists } from "../../../helpers/errors";
 
 function handleError(error: string, body?: Record<string, any>) {
   const headers = new Headers()
@@ -16,10 +16,10 @@ function handleError(error: string, body?: Record<string, any>) {
 }
 
 export const POST: APIRoute = async (context) => {
-  const data = await context.request.formData()
+  const dataField = await context.request.formData()
 
-  const id = parseInt(data.get('id') as string)
-  const name = data.get('name') as string
+  const id = parseInt(dataField.get('id') as string)
+  const name = dataField.get('name') as string
 
   if (!id || !name) {
     return handleError(invalidInput, { id, name })
@@ -33,12 +33,12 @@ export const POST: APIRoute = async (context) => {
     return handleError(nameTooShort, { id, name })
   }
 
-  if (await findPokemonById(id) || await findPokemonByName(name)) {
-    return handleError(pokemonAlreadyExists, { id, name })
+  if (await findDataById(id) || await findDataByName(name)) {
+    return handleError(dataAlreadyExists, { id, name })
   }
 
-  const pokemon = { id, name }
-  await addPokemon(pokemon)
+  const data = { id, name }
+  await addData(data)
 
   return context.redirect('/')
 }

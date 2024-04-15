@@ -1,0 +1,72 @@
+<script>
+    import Layout from "../routes/src/layout/layout.svelte";
+    import { getDataList } from "../routes/src/services/data";
+    import { invalidInput, nameTooLong, nameTooShort, dataAlreadyExists } from "../routes/src/helpers/errors";
+
+   /**
+	 * @type {any[]}
+	 */
+   let list = [];
+  let error = "";
+
+  getDataList().then(response => {
+    list = response.list;
+  });
+
+  const body = JSON.parse($cookies.body) || {};
+  const nameError = error === nameTooLong || error === nameTooShort;
+</script>
+
+
+  <Layout title="Paises - SERVER">
+    <main class="container mx-auto flex flex-col">
+      <h1 class="text-5xl text-blue-600 font-extrabold text-center">Paises - Server Side</h1>
+      <form action="/api/data" method="post">
+        {#if (error === invalidInput || error === dataAlreadyExists)}
+          <div class="bg-red-400/70 p-4 rounded my-2 text-white text-xl">
+            Error: {error}
+          </div>
+        {/if}
+        <h2 class="text-2xl text-blue-700 font-bold">Agregar nuevo pais</h2>
+        <input
+          type="number"
+          name="id"
+          placeholder="ID"
+          value={body.id ?? ""}
+          class="my-1 w-full p-2 border border-gray-300 rounded-lg"
+        />
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={body.name ?? ""}
+            class="my-1 w-full p-2 border border-gray-300 rounded-lg {nameError ? 'border-red-600' : ''}"
+          />
+          {#if nameError}
+            <label class="text-red-600">{error}</label>
+          {/if}
+        </div>
+        <button
+          type="submit"
+          class="w-full p-2 bg-blue-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-blue-700"
+        >Agregar</button>
+      </form>
+      <ul class="mt-4 border-4 border-blue-700">
+        <li class="flex items-center justify-between border-b border-gray-300 p-2 bg-blue-700">
+          <span class="text-lg text-white font-extrabold w-1/3">ID</span>
+          <span class="text-lg text-white font-extrabold w-1/3 text-center">Name</span>
+          <span class="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
+        </li>
+        {#each list as data}
+          <li class="flex items-center justify-between border-b border-gray-300 p-2">
+            <span class="text-lg text-blue-600 font-bold w-1/3">{data.id}</span>
+            <span class="text-lg text-blue-600 font-bold w-1/3 text-center">{data.name}</span>
+            <form action={`/api/data/${data.id}`} method="post" class="w-1/3 text-right">
+              <button type="submit" class="font-bold hover:font-extrabold">X</button>
+            </form>
+          </li>
+        {/each}
+      </ul>
+    </main>
+  </Layout>
