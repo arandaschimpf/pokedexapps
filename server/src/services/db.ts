@@ -1,9 +1,9 @@
-import Datastore from "nedb-promises-ts";
-const db = new Datastore({ filename: "./data/db", autoload: true });
+import Datastore from "nedb-promises";
+const db = Datastore.create ({ filename: "./data/db", autoload: true });
 
 interface Pokemon {
-    id: number;
-    name: string;
+    id: number
+    name: string
 }
 
 const savePokemon = async (pokemon: Pokemon) => {
