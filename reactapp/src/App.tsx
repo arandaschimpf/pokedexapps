@@ -7,6 +7,8 @@ type Pokemon = {
 
 const BASE_URL = 'http://localhost:4321/api'
 
+
+
 export default function App() {
   const [list, setList] = useState<Pokemon[]>([])
   const [page, setPage] = useState(1)
@@ -41,15 +43,15 @@ export default function App() {
       },
       body: JSON.stringify(pokemon)
     })
-
+    
     const obj = await response.json();
-
-    console.log(obj);
+    
 
 
     if(obj.error) {
       setError(obj.error);
       return
+      
     } 
 
    
@@ -73,7 +75,7 @@ export default function App() {
       setPage(page - 1)
     }
   }
-
+    
   return (
     <main className="container mx-auto flex flex-col">
 		<h1 className="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
