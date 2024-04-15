@@ -15,7 +15,7 @@ export function handleError(error: string, body?: Record<string, any>) {
     headers: headers
   })
 }
-
+/*
 export const POST: APIRoute = async (context) => {
   const data = await context.request.formData()
 
@@ -42,5 +42,5 @@ export const POST: APIRoute = async (context) => {
   await addPokemon(pokemon)
 
   return context.redirect('/')
-}
+}*/
 

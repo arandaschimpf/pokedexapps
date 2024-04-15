@@ -15,6 +15,7 @@ export default function App() {               //el segundo parámetro es una fun
   const [list, setList] = useState<Pokemon[]>([])   //set list encargado de actualizar nuestro componente, su estado inicial: <Pokemon[]>([]) 
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
+  const [e, setError] = useState("")
   const pageCount = Math.ceil(count / 5)
 
   useEffect(() => {         //CON ESTE USEEFFECT ACTUALIZO EL ESTADO
@@ -39,7 +40,7 @@ export default function App() {               //el segundo parámetro es una fun
 
     
     event.preventDefault()
-    /*
+    
     const form = event.currentTarget
     const data = new FormData(form)
     const pokemon = {
@@ -47,22 +48,31 @@ export default function App() {               //el segundo parámetro es una fun
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+     const result = await fetch(`${BASE_URL}/pokemon.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(pokemon)
-    }).catch((er) => setError(er))
-    console.log(e)
+    })
+    console.log(result);
+    let error = ""
+    const jso = await result.json()  //Llamo a la promesa como un json
+    for(let i in jso){
+      console.log("******",jso[i])
+      error = jso[i]     
+      alert(error) 
+    }
+    setError(error)
+    
 
     form.reset()
     if (page === pageCount && list.length < 5) {
       setList(current => [...current, pokemon])
     }
     setCount(current => current + 1)
-    */
-   
+    
+   /*
     const form = event.currentTarget
     const data = new FormData(form)
     let i = parseInt(data.get('id') as string)
@@ -106,7 +116,7 @@ export default function App() {               //el segundo parámetro es una fun
     else if(nam.length >15){messageError=nameTooLong}
     else if(nam.length <2){messageError=nameTooShort}
     if(messageError != ''){return alert(messageError)}
-    
+    */
   }
 
 
