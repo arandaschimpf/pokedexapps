@@ -39,7 +39,7 @@ export default function App() {               //el segundo parámetro es una fun
 
     
     event.preventDefault()
-/*
+    /*
     const form = event.currentTarget
     const data = new FormData(form)
     const pokemon = {
