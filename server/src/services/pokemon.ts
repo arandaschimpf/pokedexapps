@@ -1,3 +1,5 @@
+import { savePokemonDB } from "./db"
+import { getPokemonListDB} from "./db"
 export type Pokemon = {
   id: number
   name: string
@@ -14,6 +16,14 @@ const pokemonList: Pokemon[] = [
   { id: 9, name: 'Blastoise' },
 ]
 
+export const findPokemonById = async (id: number) => {
+  return pokemonList.find(p => p.id === id)
+}
+
+export const findPokemonByName = async (name: string) => {
+  return pokemonList.find(p => p.name === name)
+}
+
 export const getPokemonList = async (page?: number): Promise<{ list: Pokemon[], count: number}> => {
   if (!page) { return { list: pokemonList, count: pokemonList.length } }
   return { list: pokemonList.slice((page - 1) * 5, page * 5), count: pokemonList.length }
@@ -24,6 +34,8 @@ export const addPokemon = async (pokemon: Pokemon) => {
     throw new Error('Pokemon already exists')
   }
   pokemonList.push(pokemon)
+  const newPokemonDoc = await savePokemonDB(pokemon)
+  console.log('Saved Pokemon: ', newPokemonDoc)
   return pokemon
 }
 
