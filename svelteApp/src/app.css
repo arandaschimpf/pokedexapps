@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    font-family: 'Inconsolata', sans-serif;
+    background: url('images/patron1.jpg'); 
+    min-width: 400px;
+    
+}

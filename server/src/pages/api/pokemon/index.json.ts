@@ -6,7 +6,7 @@ export const GET: APIRoute = async (context) => {
   //EN que pagina estoy parado
   const page = parseInt(context.url.searchParams.get('page') ?? '1', 10);
   return new Response(JSON.stringify({
-    pokemonList: await getFivePokemon()
+    pokemonList: await getPokemonList(page)
   }), {
     headers: {
       'content-type': 'application/json',
