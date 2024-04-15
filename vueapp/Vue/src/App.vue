@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="container mx-auto flex flex-col">
     <h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
     <form @submit.prevent="addPokemon" class="my-4">
@@ -26,16 +26,16 @@
     </div>
   </div>
 </template>
-
+<!--  -->
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed, watch } from 'vue';
 
 const BASE_URL = 'http://localhost:4321/api';
 
 const list = ref([]);
 const page = ref(1);
 const count = ref(0);
-const pageCount = Math.ceil(count.value / 5);
+const pageCount = computed(() => Math.ceil(count.value / 5));
 const error = ref('');
 const formData = reactive({ id: '', name: '' });
 
@@ -73,10 +73,10 @@ const addPokemon = async () => {
     formData.id = '';
     formData.name = '';
 
-    if (page.value === pageCount && list.value.length < 5) {
+    if (page.value === pageCount.value && list.value.length < 5) {
       list.value.push({ id: parseInt(formData.id), name: formData.name });
     }
-
+    error.value = ''
     count.value += 1;
   } catch (error) {
     console.error('Error adding Pokemon:', error);
@@ -92,7 +92,7 @@ const deletePokemon = async (id) => {
     list.value = list.value.filter(pokemon => pokemon.id !== id);
     count.value -= 1;
 
-    if (page.value >= pageCount) {
+    if (page.value >= pageCount.value) {
       page.value -= 1;
     }
   } catch (error) {
@@ -105,10 +105,9 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-  page.value = Math.min(pageCount, page.value + 1);
+  page.value = Math.min(pageCount.value, page.value + 1);
 };
-
-onMounted(fetchData);
+watch(page, fetchData, { immediate: true })
 </script>
 
 <style scoped>
