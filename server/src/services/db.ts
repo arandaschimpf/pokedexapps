@@ -1,20 +1,22 @@
 import Datastore from "nedb-promises";
 import type { Pokemon } from "./pokemon";
 
-const db = Datastore.create({filename: './data/db', autoload: true});
+const db = Datastore.create({filename: './data/db.db', autoload: true});
 
-const savePokemon = async (pokemon: Pokemon) => {
+export const savePokemon = async (pokemon: Pokemon) => {
     return db.insert(pokemon);
 }
 
-const findPokemon = async (id:number) => {
+export const findPokemon = async (id:number) => {
     return db.findOne({id: id});
 }
 
-const deletePokemon = async (id:number) => {
+export const deletePokemon = async (id:number) => {
     return db.remove({id: id}, {});
 }
 
-const getFivePokemon = async (page:number) => {
-    return db.find({}).skip(5*page).limit(5);
+export const getFivePokemon = async (page:number) => {
+    const allPokemon = await db.find({});
+    const pokemonSlice = allPokemon.slice(5 * (page - 1), 5 * page);
+    return pokemonSlice;
 }

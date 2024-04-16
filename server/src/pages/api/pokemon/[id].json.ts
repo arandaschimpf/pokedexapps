@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { deletePokemon, getPokemonList } from "../../../services/pokemon";
+import { deletePokemon } from "../../../services/db";
 
 export const DELETE: APIRoute = async (context) => {
   const id = parseInt(context.params.id!, 10)

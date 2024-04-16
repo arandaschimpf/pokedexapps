@@ -1,12 +1,12 @@
 import type { APIContext, APIRoute } from "astro"
-import { addPokemon, getPokemonList } from "../../../services/pokemon"
+import { getFivePokemon, savePokemon } from "../../../services/db"
 
 
 export const GET: APIRoute = async (context) => {
   //EN que pagina estoy parado
   const page = parseInt(context.url.searchParams.get('page') ?? '1', 10);
   return new Response(JSON.stringify({
-    pokemonList: await getPokemonList(page)
+    pokemonList: await getFivePokemon(page)
   }), {
     headers: {
       'content-type': 'application/json',
@@ -18,7 +18,7 @@ export const GET: APIRoute = async (context) => {
 
 export const POST: APIRoute = async (context: APIContext) => {
   const pokemon = await context.request.json();
-  await addPokemon(pokemon);
+  await savePokemon(pokemon);
   return new Response(JSON.stringify({
     pokemon: pokemon
   }), {
@@ -29,6 +29,3 @@ export const POST: APIRoute = async (context: APIContext) => {
   })
 }
 
-function getFivePokemon() {
-  throw new Error("Function not implemented.");
-}

@@ -1,5 +1,24 @@
-<form id="add-pokemon">
-  <div class="absolute opacity-35 h-[100%] w-screen bg-black"></div>
+<script>
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
+
+  /**
+   * @param {{ preventDefault: () => void; target: any; }} e
+   */
+  function submitForm(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const id = parseInt(form.id.value, 10);
+    const name = form.name.value;
+
+    dispatch("submit", { id, name });
+  }
+</script>
+
+<form id="add-pokemon" on:submit={submitForm}>
+  <!-- <div class="absolute opacity-35 h-[100%] w-screen bg-black"></div> -->
   <div class="relative">
     <div class="mx-auto w-4/5 p-4">
       <h2 class="text-2xl text-[#403021] font-bold">Agregar nuevo pokemon</h2>
