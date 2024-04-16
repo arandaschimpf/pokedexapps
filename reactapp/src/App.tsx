@@ -11,15 +11,23 @@ export default function App() {
   const [list, setList] = useState<Pokemon[]>([])
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
+  const [error, setError] = useState("")
   const pageCount = Math.ceil(count / 5)
 
   useEffect(() => {
+    let cancelled = false
     fetch(`${BASE_URL}/pokemon.json?page=${page}`)
       .then((res) => res.json())
       .then((data) => {
-        setList(data.list)
-        setCount(data.count)
+        if (!cancelled) {
+          setList(data.list)
+          setCount(data.count)
+        }
       })
+
+    return () => {
+      cancelled = true
+    }
   }, [page])
 
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
@@ -32,13 +40,18 @@ export default function App() {
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    const response = await fetch(`${BASE_URL}/pokemon.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(pokemon)
     })
+
+    if (!response.ok) {
+      const errorMessage = await response.text(); 
+      setError(errorMessage);
+    }
 
     form.reset()
     if (page === pageCount && list.length < 5) {
