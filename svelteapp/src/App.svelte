@@ -65,7 +65,6 @@ let list:  Pokemon[] = [];
     fetchData();
   }
 </script>
-
 <main class="container mx-auto flex flex-col">
   <h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
   <form on:submit={addPokemon}>
