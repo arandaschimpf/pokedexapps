@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     pageCount() {
-      return Math.ceil(this.count / 5); // Assuming 5 items per page
+      return Math.ceil(this.count / 5); 
     },
   },
   async created() {
