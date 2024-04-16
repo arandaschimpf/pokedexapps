@@ -1,0 +1,106 @@
+.container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f7f7f7;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #dc2626; /* Rojo similar al usado en el HTML */
+  font-weight: 800;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #FF9933; /* Rojo similar al usado en el HTML */
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+form {
+  width: 90%;
+}
+
+input[type="number"],
+input[type="text"],
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db; /* Gris similar al usado en el HTML */
+  border-radius: 0.25rem;
+  width: 80%;
+}
+
+button {
+  background-color: #FFFF33; /* Rojo similar al usado en el HTML */
+  color: black;
+  font-weight: 700;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #FFFF99; /* Rojo ligeramente más oscuro */
+}
+
+ul {
+  margin-top: 2rem;
+  border: 4px solid #FFFF33; /* Rojo similar al usado en el HTML */
+  padding: 0;
+  width: 80%;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #d1d5db; /* Gris similar al usado en el HTML */
+  padding: 0.75rem 1rem;
+  color: gray;
+}
+
+li:first-child {
+  background-color: #FFFF33; /* Rojo similar al usado en el HTML */
+}
+
+li:first-child span {
+  color: black;
+}
+
+span {
+  font-weight: 700;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  margin: 0 0.5rem;
+}
+
+input[type="submit"],
+button {
+  text-align: center;
+  width: 50%;
+}
