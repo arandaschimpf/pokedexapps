@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "nedb-promises": "^6.2.3"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  }
+}

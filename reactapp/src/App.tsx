@@ -1,73 +1,73 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react" 
 
-type Pokemon = {
+type Pokemon = { // Tipo para representar un pokemon
   id: number
   name: string
 }
 
-const BASE_URL = 'http://localhost:4321/api'
+const BASE_URL = 'http://localhost:4321/api' // URL base del servidor
 
-export default function App() {
-  const [list, setList] = useState<Pokemon[]>([])
-  const [page, setPage] = useState(1)
-  const [count, setCount] = useState(0)
-  const pageCount = Math.ceil(count / 5)
+export  function App() { 
+  const [list, setList] = useState<Pokemon[]>([]) // Lista de pokemones
+  const [page, setPage] = useState(1) // Página actual
+  const [count, setCount] = useState(0) // Cantidad total de pokemones
+  const pageCount = Math.ceil(count / 5) // Cantidad de páginas
 
-  useEffect(() => {
-    let cancelled = false
-    fetch(`${BASE_URL}/pokemon.json?page=${page}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!cancelled) {
-          setList(data.list)
-          setCount(data.count)
+  useEffect(() => { // Efecto para cargar la lista de pokemones
+    let cancelled = false // Variable para saber si el efecto fue cancelado
+    fetch(`${BASE_URL}/pokemon.json?page=${page}`) // Hace una petición GET al servidor
+      .then((res) => res.json()) // Convierte la respuesta a un objeto JSON
+      .then((data) => { // Cuando se resuelva la promesa
+        if (!cancelled) { // Si el efecto no fue cancelado
+          setList(data.list) // Actualiza la lista de pokemones
+          setCount(data.count) // Actualiza la cantidad total de pokemones
         }
       })
 
     return () => {
-      cancelled = true
+      cancelled = true // Cuando el componente se desmonte, cancela el efecto
     }
-  }, [page])
+  }, [page]) // Se ejecuta cuando la página cambie
 
-  async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  async function addPokemon(event: React.FormEvent<HTMLFormElement>) { 
+    event.preventDefault() // Evita que el formulario se envíe por defecto
 
-    const form = event.currentTarget
-    const data = new FormData(form)
-    const pokemon = {
-      id: parseInt(data.get('id') as string),
+    const form = event.currentTarget 
+    const data = new FormData(form) // Obtiene los datos del formulario
+    const pokemon = { // Crea un objeto pokemon con los datos del formulario
+      id: parseInt(data.get('id') as string), 
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    await fetch(`${BASE_URL}/pokemon.json`, { // Hace una petición POST al servidor
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(pokemon)
+      body: JSON.stringify(pokemon) // Convierte el objeto pokemon a un string JSON
     })
 
-    form.reset()
-    if (page === pageCount && list.length < 5) {
-      setList(current => [...current, pokemon])
+    form.reset() // Limpia el formulario
+    if (page === pageCount && list.length < 5) { // Si estamos en la última página y hay menos de 5 pokemones en la lista
+      setList(current => [...current, pokemon]) // Agrega el nuevo pokemon a la lista
     }
-    setCount(current => current + 1)
+    setCount(current => current + 1) // Incrementa el contador de pokemones
   }
 
-  async function deletePokemon(id: number) {
-    await fetch(`${BASE_URL}/pokemon/${id}.json`, {
+  async function deletePokemon(id: number) { // Función para eliminar un pokemon
+    await fetch(`${BASE_URL}/pokemon/${id}.json`, { // Hace una petición DELETE al servidor
       method: 'DELETE'
     })
 
-    setList(current => current.filter(pokemon => pokemon.id !== id))
-    setCount(current => current - 1)
+    setList(current => current.filter(pokemon => pokemon.id !== id)) // Filtra la lista para eliminar el pokemon con el id dado
+    setCount(current => current - 1) // Decrementa el contador de pokemones
 
-    if (page >= pageCount) {
-      setPage(page - 1)
+    if (page >= pageCount) { // Si estamos en la última página
+      setPage(page - 1) // Retrocede una página
     }
   }
 
-  return (
+  return ( // Renderiza el component
     <main className="container mx-auto flex flex-col">
 		<h1 className="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
 		<form action="/api/pokemon" method="post" onSubmit={addPokemon}>
