@@ -29,11 +29,12 @@
   $: error, page, getPokemon(page);
 
   async function handleNextPage() {
-    const totalPages = Math.ceil(pokemonList.length / 5);
-
-    if (page <= totalPages) {
+    const totalPages = await getPokemon(page + 1);
+    console.log(page);
+    if (totalPages.pokemonList.lenght > 0) {
+      console.log(page);
       page += 1;
-      console.log("Página siguiente:", page);
+      console.log(page);
     }
   }
 
