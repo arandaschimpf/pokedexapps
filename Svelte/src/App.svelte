@@ -3,11 +3,10 @@
   import { writable, derived } from 'svelte/store';
   import TailwindCss from './TailwindCSS.svelte';
   
-
+  
 
   
  
-
   // Define writable Svelte stores
   let list = writable<Pokemon[]>([]);
   let page = writable<number>(1); // Specify the type of the page parameter as number
@@ -78,16 +77,11 @@
         body: JSON.stringify(pokemon)
       });
 
-      /*
-      if (!response.ok) {
-        throw new Error('Failed to add Pokemon');
-      }
-      */
-
+   
 
     //Looking if exist an error  
     const obj = await response.json();
-    console.log(obj);
+    
     if (obj.error) {
       error.set(obj.error);
       return;
@@ -95,10 +89,6 @@
   }
 
    
-
-   
-
-
   //Delete pokemon
   async function deletePokemon(id: number) {
   
@@ -113,17 +103,17 @@
     const currentPage = $page;
     const pageCountValue = $pageCount;
 
-    if (currentPage > 1 && list.lenght % itemsPerPage === 0) {
+    if (currentPage > 1 && $list.length % itemsPerPage === 0) {
         // If the current page is not the first page and becomes empty after deletion,
         // decrement the page number to show the previous page
         page.update(page => page - 1);
       }
   } 
   
-  
-  
+  //
   
 </script>
+
 
 
 <TailwindCss />
@@ -169,3 +159,8 @@
     <button on:click={() => changePage($page + 1)} disabled={$page === $pageCount} class="p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 disabled:opacity-50 hover:bg-red-700">Next</button>
   </div>
 </main>
+
+
+
+
+
