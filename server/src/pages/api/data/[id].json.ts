@@ -3,6 +3,7 @@ import { deleteData } from "../../../services/data";
 
 export const DELETE: APIRoute = async (context) => {
   const id = parseInt(context.params.id ?? '0', 10)
+  console.log(id)
   const data = await deleteData(id)
   return new Response(JSON.stringify(data), {
     headers: {

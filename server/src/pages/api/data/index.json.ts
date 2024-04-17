@@ -4,7 +4,7 @@ import { addData, getDataList, type Data } from "../../../services/data"
 export const GET: APIRoute = async (context) => {
   const page = parseInt(context.url.searchParams.get('page') ?? '1', 10)
 
-  return new Response(JSON.stringify(await getDataList(page)), {
+  return new Response(JSON.stringify((await getDataList(page))), {
     headers: {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',

@@ -1,19 +1,14 @@
-function ShowDataNames(){
-    fetch('http://localhost:4321/api/data/index.json', {method: 'GET'}) //TIRA ERROR 404...
-    .then(response => {
-        if (response.ok) {
-            console.log(response.json);
-            return response.json();
-        }
-    })
-    .then(data => {
-        data.dataList.forEach(item => {
-            addData(item)
-        });
-    })
+async function ShowDataNames(){
+    document.getElementById("dataList").innerHTML = '';
+    const response = await fetch('http://localhost:4321/api/data.json', {method: 'GET'})
+    const json = await response.json()
+    json.list.forEach(item => {
+        addData(item, true)
+    });
+    console.log(json.list);
 }
 
-function addData(item){
+function addData(item, iteration){
     const listItem = document.createElement('li')
 
     listItem.classList = "flex items-center justify-between border-b border-gray-300 p-2"
@@ -26,12 +21,16 @@ function addData(item){
 
         formDelete.addEventListener("submit", (event) =>{
             event.preventDefault();
-            fetch(`http://localhost:4321/api/data/${listItem.id}.json`, {method: 'DELETE'})
-            document.getElementById("dataList")?.removeChild(listItem)
+            fetch(`http://localhost:4321/api/data/${item.id}.json`, {method: 'DELETE'})
+            document.getElementById("dataList").removeChild(listItem)
 
         })
         listItem.appendChild(formDelete)
-        document.getElementById("dataList")?.appendChild(listItem)
+        document.getElementById("dataList").appendChild(listItem)
+        
+        if(!iteration){
+            ShowDataNames()
+        }
 }
 
 document.getElementById("dataAdd")?.addEventListener("submit", async (event) => {
@@ -39,15 +38,13 @@ document.getElementById("dataAdd")?.addEventListener("submit", async (event) => 
 
     const formData = new FormData(event.target);
 
-    const id = formData.get('id');
+    const id = parseInt(formData.get('id'));
     const name = formData.get('name');
 
     const newPais = { id: id, name: name };
 
-    addData(newPais);
-
     try {
-        const response = await fetch('http://localhost:4321/api/data/index.json', {
+        const response = await fetch('http://localhost:4321/api/data.json', {
             method: 'POST',
             body: JSON.stringify(newPais)
         });
@@ -57,8 +54,9 @@ document.getElementById("dataAdd")?.addEventListener("submit", async (event) => 
         }
 
         const responseData = await response.json()
-
+        addData(newPais,false);
     } catch (error) {
         console.error('Error al agregar pais:', error);
+
     }
 });

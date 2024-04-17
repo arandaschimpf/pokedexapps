@@ -19,22 +19,34 @@ export const findDataByName = async (name: string) => {
 }
 
 export const getDataList = async (page?: number): Promise<{ list: Data[], count: number}> => {
-  if (!page) { return { list: dataList, count: dataList.length } }
-  return { list: dataList.slice((page - 1) * 5, page * 5), count: dataList.length }
-}
+  // Copia de la lista original  y Ordena la lista por el campo 'id'
+  let sortedList = [...dataList];
+  sortedList.sort((a, b) => a.id - b.id);
+  // Si no se especifica la página, devuelve la lista completa ordenada
+  if (!page) {
+    return { list: sortedList, count: sortedList.length };
+  }
+  // Calcula el rango de elementos para la página especificada
+  const startIndex = (page - 1) * 10;
+  const endIndex = startIndex + 10;
+  // Devuelve la lista ordenada y paginada
+  return { list: sortedList.slice(startIndex, endIndex), count: sortedList.length };
+};
 
 export const addData = async (data: Data) => {
   if (dataList.some((p) => p.id === data.id)) {
-    throw new Error('Pokemon already exists')
+    throw new Error('Data already exists')
   }
   dataList.push(data)
+  console.log((await getDataList()).list)
   return data
 }
 
 export const deleteData = async (dataId: number) => {
-  const index = dataList.findIndex((data) => data.id === dataId)
+  const index = (await getDataList()).list.findIndex((data) => data.id === dataId)
   if (index === -1) {
     throw new Error('Data not found')
   }
+  console.log((await getDataList()).list)
   return dataList.splice(index, 1)[0]
 }
