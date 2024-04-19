@@ -18,14 +18,28 @@ export const GET: APIRoute = async (context) => {
 
 export const POST: APIRoute = async (context: APIContext) => {
   const pokemon = await context.request.json();
-  await savePokemon(pokemon);
-  return new Response(JSON.stringify({
-    pokemon: pokemon
-  }), {
-    headers: {
-      'content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    }
-  })
+  try {
+    await savePokemon(pokemon);
+    return new Response(JSON.stringify({
+      pokemon: pokemon
+    }), {
+      headers: {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    })
+  } catch (error) {
+    // @ts-ignore
+    const e: Error = error
+    return new Response(JSON.stringify({
+      error: e.message
+    }), {
+      status: 400,
+      headers: {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    })
+  }
 }
 

@@ -14,7 +14,7 @@
   //   GET
 
   let page = 1;
-  let error = false;
+  let error: string|undefined = undefined;
   let pokemonList: Pokemon[] = [];
 
   const getPokemon = async (page: number) => {
@@ -26,16 +26,16 @@
     return data;
   };
 
-  $: error, page, getPokemon(page);
+  $: page, getPokemon(page);
 
   async function handleNextPage() {
-    const totalPages = await getPokemon(page + 1);
+    // const totalPages = await getPokemon(page + 1);
     console.log(page);
-    if (totalPages.pokemonList.lenght > 0) {
-      console.log(page);
-      page += 1;
-      console.log(page);
-    }
+    page += 1;
+    // if (totalPages.pokemonList.lenght > 0) {
+    //   console.log(page);
+    //   console.log(page);
+    // }
   }
 
   function handlePrevPage() {
@@ -47,6 +47,7 @@
 
   async function handleSubmit(e: { detail: { id: number; name: string } }) {
     const { id, name } = e.detail;
+    error = undefined
     const response = await fetch("http://localhost:4321/api/pokemon.json", {
       method: "POST",
       headers: {
@@ -55,8 +56,13 @@
       body: JSON.stringify({ id, name }),
     });
     if (response.ok) {
-      pokemonList = [...pokemonList, { id, name }];
-      console.log(pokemonList);
+      if(pokemonList.length < 5){
+        pokemonList = [...pokemonList, { id, name }];
+        console.log(pokemonList);
+      }
+    } else {
+      const data = await response.json()
+      error = data.error
     }
   }
 
@@ -79,9 +85,9 @@
 <Header />
 <main>
   <Form on:submit={handleSubmit} />
-  <!-- {#if error}
-  <div class="bg-red-500 text-white p-2 mb-4">El pokemon elegido ya existe</div>
-  {/if} -->
+  {#if error}
+    <div class="bg-red-500 text-white p-2 mb-4">{error}</div>
+  {/if}
   <TableSup />
   <div class="mt-4 border-4 border-[#484032] mx-auto w-4/5 h-[230px]">
     {#each pokemonList as item}
