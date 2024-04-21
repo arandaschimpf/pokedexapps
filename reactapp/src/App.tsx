@@ -15,7 +15,7 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false
-    fetch(`${BASE_URL}/pokemon.json?page=${page}`)
+    fetch(`${BASE_URL}/pokemon?page=${page}`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {
@@ -39,7 +39,7 @@ export default function App() {
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    await fetch(`${BASE_URL}/pokemon`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export default function App() {
   }
 
   async function deletePokemon(id: number) {
-    await fetch(`${BASE_URL}/pokemon/${id}.json`, {
+    await fetch(`${BASE_URL}/pokemon/${id}`, {
       method: 'DELETE'
     })
 
@@ -83,7 +83,7 @@ export default function App() {
 				<span className="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
 			</li>
 			{list.map(pokemon => (
-				<li className="flex items-center justify-between border-b border-gray-300 p-2">
+				<li key={pokemon.id} className="flex items-center justify-between border-b border-gray-300 p-2">
 					<span className="text-lg text-red-600 font-bold w-1/3">{pokemon.id}</span>
 					<span className="text-lg text-red-600 font-bold w-1/3 text-center">{pokemon.name}</span>
 					<div className="w-1/3 text-right">

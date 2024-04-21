@@ -12,8 +12,8 @@ export class AppController {
   }
 
   @Get()
-  getAllPokemon(@Query('page') page: number , @Query('pageSize') pageSize:number): PokemonListResponse{
-    return this.appService.getAllPokemon(page,pageSize)
+  getAllPokemon(@Query('page') page: number): PokemonListResponse{
+    return this.appService.getAllPokemon(page)
   } 
 
   @Get(':id')
