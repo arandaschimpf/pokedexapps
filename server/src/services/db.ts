@@ -1,5 +1,5 @@
-import Datastore from "nedb-promises-ts";
-const db = new Datastore({ filename: "./data/db", autoload: true });
+const Datastore = require('nedb-promises')
+const db = Datastore.create("./data/db");
 
 interface Pokemon {
     id: number;
@@ -26,8 +26,13 @@ const getPokemonListDB = async (page: number = 1) => {
     return { list, count };
 }
 
-export { savePokemon, findPokemonDB, findPokemonByNameDB, getPokemonListDB };
+const deletePokemonDB = async (pokemonId: number) => {
+    const deletedPokemon = await db.findOneAndRemove({ pokemonId });
+}
+
+export { savePokemon, findPokemonDB, findPokemonByNameDB, getPokemonListDB, deletePokemonDB };
 
 
 
 //hay que hacer un nuevo cliente con solid js
+//para el juego vamos a usar next js con App Router

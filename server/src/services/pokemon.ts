@@ -1,4 +1,4 @@
-// import { savePokemon, findPokemonDB, findPokemonByNameDB, getPokemonListDB } from "./db"
+import { savePokemon, findPokemonDB, findPokemonByNameDB, getPokemonListDB, deletePokemonDB } from "./db"
 
 export type Pokemon = {
   id: number
@@ -17,39 +17,42 @@ const pokemonList: Pokemon[] = [
 ]
 
 export const findPokemonById = async (id: number) => {
-  return pokemonList.find(p => p.id === id)
-  // const pokemonfind = await findPokemonDB(id);
-  // return pokemonfind;
+  // return pokemonList.find(p => p.id === id)
+  const pokemonfind = await findPokemonDB(id);
+  return pokemonfind;
 }
 
 export const findPokemonByName = async (name: string) => {
-  return pokemonList.find(p => p.name === name)
-  // const pokemonfind = await findPokemonByNameDB(name);
-  // return pokemonfind;
+  // return pokemonList.find(p => p.name === name)
+  const pokemonfind = await findPokemonByNameDB(name);
+  return pokemonfind;
 }
 
-export const getPokemonList = async (page?: number): Promise<{ list: Pokemon[], count: number }> => {
-  if (!page) { return { list: pokemonList, count: pokemonList.length } }
-  return { list: pokemonList.slice((page - 1) * 5, page * 5), count: pokemonList.length }
-  // const DBresponse = await getPokemonListDB(page);
-  // return ({ DBresponse.list, DBresponse.count })
+// export const getPokemonList = async (page?: number): Promise<{ list: Pokemon[], count: number }> => {
+export const getPokemonList = async (page?: number) => {
+  // if (!page) { return { list: pokemonList, count: pokemonList.length } }
+  // return { list: pokemonList.slice((page - 1) * 5, page * 5), count: pokemonList.length }
+  const DBresponse: { list: Pokemon[], count: number } = await getPokemonListDB(page);
+  return ({ list: DBresponse.list, count: DBresponse.count })
 }
 
 export const addPokemon = async (pokemon: Pokemon) => {
   if (pokemonList.some((p) => p.id === pokemon.id)) {
     throw new Error('Pokemon already exists')
   }
-  pokemonList.push(pokemon)
+  // pokemonList.push(pokemon)
 
-  // const newPokemonDoc = await savePokemon(pokemon);
-  // console.log("pokemon saved", newPokemonDoc);
+  const newPokemonDoc = await savePokemon(pokemon);
+  console.log("pokemon saved", newPokemonDoc);
   return pokemon
 }
 
 export const deletePokemon = async (pokemonId: number) => {
-  const index = pokemonList.findIndex((pokemon) => pokemon.id === pokemonId)
-  if (index === -1) {
-    throw new Error('Pokemon not found')
-  }
-  return pokemonList.splice(index, 1)[0]
+  // const index = pokemonList.findIndex((pokemon) => pokemon.id === pokemonId)
+  // if (index === -1) {
+  //   throw new Error('Pokemon not found')
+  // }
+  // return pokemonList.splice(index, 1)[0]
+  deletePokemonDB(pokemonId);
+  return getPokemonListDB();
 }
