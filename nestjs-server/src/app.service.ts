@@ -21,11 +21,11 @@ export class AppService {
 
   }
 
-  async deletePokemon(id:number):Promise<Pokemon>{
+  deletePokemon(id:number):Pokemon{
     console.log(this.pokemonList);
     console.log(`Deleting Pokémon with ID: ${id}`);
     
-    console.log(this.pokemonList.findIndex(pokemon => pokemon.id === id))
+    console.log(this.getPokemonById(id))
 
     const index = this.pokemonList.findIndex(pokemon => pokemon.id === id);
     console.log(`Index found: ${index}`);

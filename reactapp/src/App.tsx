@@ -16,14 +16,13 @@ export default function App() {
   useEffect(() => {
     let cancelled = false
     fetch(`${BASE_URL}/pokemon?page=${page}`)
-      .then((res) => res.json())
+      .then((res) => res.json()) 
       .then((data) => {
         if (!cancelled) {
           setList(data.list)
-          setCount(data.count)
+          setCount(data.totalCount)
         }
       })
-
     return () => {
       cancelled = true
     }
@@ -65,6 +64,7 @@ export default function App() {
     if (page >= pageCount) {
       setPage(page - 1)
     }
+    console.log(count)
   }
 
   return (
