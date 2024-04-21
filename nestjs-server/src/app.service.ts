@@ -22,14 +22,7 @@ export class AppService {
   }
 
   deletePokemon(id:number):Pokemon{
-    console.log(this.pokemonList);
-    console.log(`Deleting Pokémon with ID: ${id}`);
-    
-    console.log(this.getPokemonById(id))
-
     const index = this.pokemonList.findIndex(pokemon => pokemon.id === id);
-    console.log(`Index found: ${index}`);
-
     if (index === -1){
       throw new Error('Pokemon not found.');
     }
@@ -41,8 +34,7 @@ export class AppService {
     const startIndex = (page -1 ) * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedList = this.pokemonList.slice(startIndex,endIndex)
-   return {list : paginatedList, totalCount : this.pokemonList.length};
-
+    return {list : paginatedList, totalCount : this.pokemonList.length};
  }
 
  addPokemon(newPokemon: Pokemon) : Pokemon {

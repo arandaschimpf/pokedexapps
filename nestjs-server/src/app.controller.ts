@@ -7,8 +7,9 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Delete(':id')
-  async deletePokemon(@Param('id') id:number){
-    return this.appService.deletePokemon(id);
+  async deletePokemon(@Param('id') id:string){
+    const idnew= parseInt(id,10)
+    return this.appService.deletePokemon(idnew);
   }
 
   @Get()
