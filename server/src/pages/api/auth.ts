@@ -3,7 +3,6 @@ import { authenticateUser } from "../../services/users"
 import { redirectWithCookies } from "../../helpers/redirectWithCookies"
 import { signJWT } from "../../helpers/jwt"
 
-
 export const POST: APIRoute = async (context) => {
   const data = await context.request.formData()
 

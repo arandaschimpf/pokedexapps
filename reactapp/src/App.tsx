@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react"
 
 type Pokemon = {
@@ -15,15 +16,14 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false
-    fetch(`${BASE_URL}/pokemon.json?page=${page}`)
-      .then((res) => res.json())
+    fetch(`${BASE_URL}/pokemon?page=${page}`)
+      .then((res) => res.json()) 
       .then((data) => {
         if (!cancelled) {
           setList(data.list)
-          setCount(data.count)
+          setCount(data.totalCount)
         }
       })
-
     return () => {
       cancelled = true
     }
@@ -39,7 +39,7 @@ export default function App() {
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    await fetch(`${BASE_URL}/pokemon`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export default function App() {
   }
 
   async function deletePokemon(id: number) {
-    await fetch(`${BASE_URL}/pokemon/${id}.json`, {
+    await fetch(`${BASE_URL}/pokemon/${id}`, {
       method: 'DELETE'
     })
 
@@ -65,6 +65,7 @@ export default function App() {
     if (page >= pageCount) {
       setPage(page - 1)
     }
+    console.log(count)
   }
 
   return (
@@ -83,7 +84,7 @@ export default function App() {
 				<span className="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
 			</li>
 			{list.map(pokemon => (
-				<li className="flex items-center justify-between border-b border-gray-300 p-2">
+				<li key={pokemon.id} className="flex items-center justify-between border-b border-gray-300 p-2">
 					<span className="text-lg text-red-600 font-bold w-1/3">{pokemon.id}</span>
 					<span className="text-lg text-red-600 font-bold w-1/3 text-center">{pokemon.name}</span>
 					<div className="w-1/3 text-right">
@@ -100,3 +101,225 @@ export default function App() {
 	</main>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+import { useState, useEffect } from "react";
+import { registerUser } from "../../server/src/pages/api/registerUser";
+import { loginUser } from "../../server/src/pages/api/loginUser";
+
+type Pokemon = {
+  id: number;
+  name: string;
+};
+
+
+
+const hardcodedCredentials = {
+  email: "test@example.com",
+  password: "hola"
+};
+
+const BASE_URL = 'http://localhost:4321/api';
+
+export default function App() {
+  const [list, setList] = useState<Pokemon[]>([]);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [error, setError] = useState<string>('');
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [registrationError, setRegistrationError] = useState<string>('');
+
+  const pageCount = Math.ceil(count / 5);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      setLoggedIn(true);
+      fetchPokemon();
+    }
+  }, []);
+
+  async function fetchPokemon() {
+    const response = await fetch(`${BASE_URL}/pokemon?page=${page}`);
+    const data = await response.json();
+    setList(data.list);
+    setCount(data.count);
+  }
+
+  
+
+async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  try {
+    const token = await loginUser(email, password); // Assuming loginUser makes a POST request to your server's login endpoint
+    localStorage.setItem('jwt', token);
+    setLoggedIn(true);
+  } catch (error) {
+    setError('Invalid email or password');
+  }
+}
+
+
+
+  async function handleRegistration(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const success = await registerUser(email, password);
+      if (success) {
+        setLoggedIn(true);
+      }
+    } catch (error) {
+      setError('Registration failed. Please try again.');
+    }
+  }
+
+  async function handleLogout() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    setList([]);
+    setPage(1);
+    setCount(0);
+    setEmail('');
+    setPassword('');
+    setError('');
+  }
+
+
+
+  
+
+  async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+  
+    // Check if the user is logged in before adding a Pokemon
+    if (!loggedIn) {
+      setError("You need to be logged in to add a Pokémon");
+      return;
+    }
+  
+    const form = event.currentTarget;
+    const data = new FormData(form);
+  
+    const pokemon = {
+      id: parseInt(data.get('id') as string),
+      name: data.get('name') as string
+    };
+  
+    const response = await fetch(`${BASE_URL}/pokemon`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(pokemon)
+    });
+  
+    const obj = await response.json();
+  
+    if (obj.error) {
+      setError(obj.error);
+      return;
+    }
+  
+    form.reset();
+    if (list.length < 5) {
+      setList(current => [...current, pokemon]);
+    }
+    setCount(current => current + 1);
+    // Refetch the Pokémon list to update the count
+    await fetchPokemon();
+  }
+  
+  async function deletePokemon(id: number) {
+    await fetch(`${BASE_URL}/pokemon/${id}`, {
+      method: 'DELETE'
+    });
+  
+    setList(current => current.filter(pokemon => pokemon.id !== id));
+    setCount(current => current - 1);
+  
+    // Refetch the Pokémon list to update the count
+    await fetchPokemon();
+  }
+
+  /*
+  if (!loggedIn) {
+    return (
+      <div className="container mx-auto flex justify-center items-center h-screen">
+       <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+  <div className="mb-4">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+      Email
+    </label>
+    <input
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="email"
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+    />
+  </div>
+  <div className="mb-6">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+      Password
+    </label>
+    <input
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+      id="password"
+      type="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+    />
+    <p className="text-red-500 text-xs italic">{error}</p>
+  </div>
+  <div className="flex items-center justify-between">
+    <button
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      type="submit"
+    >
+      Sign In
+            </button>
+          </div>
+        </form>
+
+      </div>
+    );
+  }
+  */
+
+  

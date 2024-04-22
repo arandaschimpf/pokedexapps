@@ -13,7 +13,7 @@ export async function createUser(user: { email: string, password: string }) {
   if (!user.password || user.password.length < 8) {
     throw new Error('Password too short');
   }
-
+  
   const salt = getSalt();
   const userWithHash: User = {
     email: user.email,
