@@ -1,12 +1,12 @@
 import { Controller, Post, Res, Body } from '@nestjs/common';
 import { Response } from 'express';
-import { UsersService } from 'src/user/user.service';
+import { UserService } from 'src/user/user.service';
 import { JwtService } from 'src/user/helpers/jwt.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 

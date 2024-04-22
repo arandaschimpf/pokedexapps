@@ -4,7 +4,7 @@ import * as usersDB from './entities/user.entity';
 import { HashPasswordService } from './helpers/hashPassword.service';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(private hashPasswordService: HashPasswordService) {}
 
   async createUser(user: { email: string; password: string }) {

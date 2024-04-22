@@ -1,10 +1,10 @@
 import { Controller, Post, Res, Body } from '@nestjs/common';
 import { Response } from 'express';
-import { UsersService } from './user.service';
+import { UserService } from './user.service';
 
 @Controller('auth')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly usersService: UserService) {}
 
   @Post('signup')
   async signUp(
