@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { PokemonService } from './pokemon.service';
@@ -20,8 +21,9 @@ export class PokemonController {
   }
 
   @Get()
-  getAllPokemon() {
-    return this.pokemonService.getAllPokemon(5);
+  getAllPokemon(@Query('page') page: number) {
+    const pageNumber = page ? page : 1;
+    return this.pokemonService.getAllPokemon(pageNumber);
   }
 
   @Delete(':id')
