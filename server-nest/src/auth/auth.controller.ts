@@ -1,11 +1,14 @@
 import { Controller, Post, Res, Body } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from 'src/user/user.service';
-import { signJWT } from '../user/helpers/user.jwt';
+import { JwtService } from 'src/user/helpers/jwt.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post('login')
   async login(
@@ -19,7 +22,7 @@ export class AuthController {
         email,
         password,
       });
-      const jwt = signJWT(user);
+      const jwt = this.jwtService.signJWT(user);
       res.cookie('user', jwt, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true });
       return res.redirect('/admin');
     } catch (error) {

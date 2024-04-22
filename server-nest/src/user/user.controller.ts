@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { UsersService } from './user.service';
 
 @Controller('auth')
-export class AuthController {
+export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('signup')

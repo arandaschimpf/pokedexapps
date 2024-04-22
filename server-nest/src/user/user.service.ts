@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import * as usersDB from './entities/user.entity';
-import { getSalt, hashPassword } from './helpers/user.hashPassword';
+import { HashPasswordService } from './helpers/hashPassword.service';
 
 @Injectable()
 export class UsersService {
-  constructor() {}
+  constructor(private hashPasswordService: HashPasswordService) {}
 
   async createUser(user: { email: string; password: string }) {
     if (!user.email || user.email.length < 5 || !user.email.includes('@')) {
@@ -19,10 +19,10 @@ export class UsersService {
       throw new Error('Password too short');
     }
 
-    const salt = getSalt();
+    const salt = this.hashPasswordService.getSalt();
     const userWithHash: User = {
       email: user.email,
-      hash: hashPassword(salt + user.password),
+      hash: this.hashPasswordService.hashPassword(salt + user.password),
       salt,
     };
 
@@ -34,7 +34,9 @@ export class UsersService {
     if (!existing) {
       throw new Error('User not found');
     }
-    const hash = hashPassword(existing.salt + user.password);
+    const hash = this.hashPasswordService.hashPassword(
+      existing.salt + user.password,
+    );
     if (hash !== existing.hash) {
       throw new Error('Invalid password');
     }
