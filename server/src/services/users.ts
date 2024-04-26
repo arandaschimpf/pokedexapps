@@ -2,6 +2,8 @@ import type { User } from "../db/users";
 import * as usersDB from "../db/users";
 import { getSalt, hashPassword } from "../helpers/hashPassword";
 
+
+//Compruebo que sea correcto el formato, validación.
 export async function createUser(user: { email: string, password: string }) {
   if (!user.email || user.email.length < 5 || !user.email.includes('@')) {
     throw new Error('Invalid email');
@@ -14,6 +16,7 @@ export async function createUser(user: { email: string, password: string }) {
     throw new Error('Password too short');
   }
   
+  ///Generamos un salt aleatorio
   const salt = getSalt();
   const userWithHash: User = {
     email: user.email,
@@ -21,6 +24,7 @@ export async function createUser(user: { email: string, password: string }) {
     salt
   };
 
+  //Guardamos en la BD
   return usersDB.createUser(userWithHash);
 }
 
@@ -29,6 +33,8 @@ export async function authenticateUser(user: { email: string, password: string }
   if (!existing) {
     throw new Error('User not found');
   }
+  
+  //Verificamos que el hash sea igual al de la Base de datos.
   const hash = hashPassword(existing.salt + user.password);
   if (hash !== existing.hash) {
     throw new Error('Invalid password');

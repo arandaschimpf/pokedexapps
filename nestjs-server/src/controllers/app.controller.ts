@@ -1,6 +1,6 @@
 import { Controller, Param, Get ,Delete,Post,Body,Query} from '@nestjs/common';
-import { AppService } from './app.service';
-import { PokemonListResponse,Pokemon } from './pokemon.interface';
+import { AppService } from '../services/app.service';
+import { PokemonListResponse,Pokemon } from '../interfaces/pokemon.interface';
 
 @Controller('api/pokemon')
 export class AppController {
@@ -26,4 +26,8 @@ export class AppController {
   addPokemon(@Body() newPokemon:Pokemon):Pokemon{
     return this.appService.CreatePokemon(newPokemon);
   }
+
+  
 }
+
+

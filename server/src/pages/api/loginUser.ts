@@ -3,7 +3,7 @@
 const BASE_URL = 'http://localhost:4321/api';
 
 export async function loginUser(email: string, password: string): Promise<string> {
-  try {
+  
     const response = await fetch(`${BASE_URL}/auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -15,8 +15,5 @@ export async function loginUser(email: string, password: string): Promise<string
     } else {
       throw new Error('Invalid email or password');
     }
-  } catch (error) {
-    console.error('Error logging in:', error);
-    throw error;
-  }
-}
+  } 
+

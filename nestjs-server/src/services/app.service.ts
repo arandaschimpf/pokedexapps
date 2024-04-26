@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import {PokemonListResponse,Pokemon } from './pokemon.interface';
+import {PokemonListResponse,Pokemon } from '../interfaces/pokemon.interface';
+
 
 @Injectable()
 export class AppService {
@@ -15,15 +16,17 @@ export class AppService {
     { id: 8, name: 'Wartortle' },
     { id: 9, name: 'Blastoise' },
     { id: 10, name: 'Pikachu' },
-    { id: 10, name: 'Messi' },
-    
-
+  
   ]
 
   getPokemonById(Pokemonid:number): Pokemon {
     return this.pokemons.find(pokemon => pokemon.id === Pokemonid)
 
   }
+
+  
+
+  
 
   removePokemon(Pokemonid:number):Pokemon{
     const index = this.pokemons.findIndex(pokemon => pokemon.id === Pokemonid);
@@ -48,6 +51,5 @@ export class AppService {
   this.pokemons.push(newPokemon);
   return newPokemon
  }
-
-
 }
+
