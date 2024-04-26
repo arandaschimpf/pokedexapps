@@ -1,21 +1,14 @@
 const { Schema, model } = require('mongoose');
 
-const EventoSchema = Schema({
+const PokemonSchema = Schema({
 
-    title: {
+    id: {
         type: String,
         required: true
     },
-    notes: {
-        type: String,        
-    },
-    start: {
-        type: Date,
-        required: true
-    },
-    end: {
-        type: Date,
-        required: true
+    name: {
+        type: String,
+        required: true        
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -25,7 +18,7 @@ const EventoSchema = Schema({
 
 });
 
-EventoSchema.method('toJSON', function() {
+PokemonSchema.method('toJSON', function() {
     const { __v, _id, ...object } = this.toObject();
     object.id = _id;
     return object;
@@ -33,5 +26,5 @@ EventoSchema.method('toJSON', function() {
 
 
 
-module.exports = model('Evento', EventoSchema );
+module.exports = model('Pokemon', PokemonSchema );
 
