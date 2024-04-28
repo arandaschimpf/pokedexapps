@@ -1,6 +1,6 @@
 import Datastore from 'nedb-promises';
 
-const db = Datastore.create({filename: './users.db'})
+const db = Datastore.create({filename: './users.db', autoload: true})
 
 export class User {
 

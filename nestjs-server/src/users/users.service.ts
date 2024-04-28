@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
 import{User} from "./entities/user.entity";
 import * as userDB from './entities/user.entity';
+import { getSalt, hashPassword } from 'src/helpers/hashPassword';
 
 @Injectable()
 export class UsersService {
@@ -22,41 +21,14 @@ export class UsersService {
 
     }
 
-    const salt = this.getSalt();
+    const salt = getSalt();
     const userWithHash : User = {
       email: email, 
-      hash : this.hashPassword(salt + password),
+      hash : hashPassword(salt + password),
       salt
     };
 
     return userDB.createUser(userWithHash);
     
   }
-  getSalt() {
-    return Crypto.randomBytes(16).toString('hex');
-  }
-
-  hashPassword(password:string){
-    return Crypto.createHash('sha256').update(password).digest('hex');
-  }
-
 }
-
-
-
-
-  // findAll() {
-  //   return `This action returns all users`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
-
-  // update(id: number) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
