@@ -32,12 +32,14 @@ export class UserService {
   async authenticateUser(user: { email: string; password: string }) {
     const existing = await usersDB.findByEmail(user.email);
     if (!existing) {
+      console.log('hola 2');
       throw new Error('User not found');
     }
     const hash = this.hashPasswordService.hashPassword(
       existing.salt + user.password,
     );
     if (hash !== existing.hash) {
+      console.log('hola');
       throw new Error('Invalid password');
     }
     return { email: existing.email };

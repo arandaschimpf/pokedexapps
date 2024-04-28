@@ -1,4 +1,4 @@
-import { Controller, Post, Res, Body, Get } from '@nestjs/common';
+import { Controller, Post, Res, Body } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from 'src/user/helpers/jwt.service';
@@ -23,15 +23,22 @@ export class AuthController {
         password,
       });
       const jwt = this.jwtService.signJWT(user);
-      res.cookie('user', jwt, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true });
-      return res.redirect('/admin');
+      return (
+        res
+          .status(200)
+          // .cookie('user', jwt, {
+          //   maxAge: 60 * 60 * 24 * 1000,
+          //   httpOnly: false,
+          //   domain: 'localhost:5173',
+          //   sameSite: 'none',
+          //   secure: false,
+          // })
+          .send({
+            accessToken: jwt,
+          })
+      );
     } catch (error) {
       return res.redirect('/login?error=true');
     }
-  }
-
-  @Get()
-  async getLogin() {
-    return '';
   }
 }

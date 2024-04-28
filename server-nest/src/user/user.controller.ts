@@ -1,16 +1,9 @@
-import {
-  Controller,
-  Post,
-  Res,
-  Body,
-  ValidationPipe,
-  Get,
-} from '@nestjs/common';
+import { Controller, Post, Res, Body, ValidationPipe } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@Controller('auth')
+@Controller('users')
 export class UserController {
   constructor(private readonly usersService: UserService) {}
 
@@ -25,10 +18,5 @@ export class UserController {
     } catch (error) {
       return res.redirect('signup?error=true');
     }
-  }
-
-  @Get('login')
-  async getUser() {
-    return '';
   }
 }

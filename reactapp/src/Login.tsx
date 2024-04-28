@@ -26,7 +26,8 @@ export function Login(){
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            // credentials: "include"
           });
            console.log("Flag 01")
           if (!response.ok) {
@@ -34,7 +35,12 @@ export function Login(){
             throw new Error('Credenciales incorrectas');
           }
           console.log("Flag 03")
-          window.location.replace('/admin');
+          const token = (await response.json())["accessToken"];
+          window.localStorage.setItem("jwt", token);
+          // console.log(response.headers);
+          // console.log(response.headers.getSetCookie())
+          // window.document.cookie = response.headers.get("Set-Cookie")!;
+          window.location.replace('/');
         } catch (error) {
           setError('Credenciales incorrectas. Inténtalo de nuevo.');
         }

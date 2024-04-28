@@ -12,6 +12,8 @@ export function Pokedex() {
   const [page, setPage] = useState(1)
   const [pageCount, setPageCount] = useState(1)
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [auth, setAuth] = useState<boolean | null>(null);
+
 
   useEffect(() => {
     let cancelled = false
@@ -29,6 +31,14 @@ export function Pokedex() {
       cancelled = true
     }
   }, [page])
+
+  useEffect(() => {
+    const hasAuth = !!window.localStorage.getItem("jwt");
+    setAuth(hasAuth)
+    if(!hasAuth) {
+      window.location.replace("/login")
+    }
+  }, [setAuth]);
 
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -83,6 +93,10 @@ export function Pokedex() {
     if (page >= pageCount) {
       setPage(page - 1)
     }
+  }
+
+  if(!auth) {
+    return ""
   }
 
   return (
