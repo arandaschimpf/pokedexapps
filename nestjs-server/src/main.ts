@@ -14,6 +14,6 @@ async function bootstrap() {
   };
   
   app.enableCors(CorsOptions);
-  await app.listen(4321);
+  await app.listen(4321); // puerto que levatna 
 }
 bootstrap();

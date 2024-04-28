@@ -2,6 +2,8 @@ import type { User } from "../db/users";
 import * as usersDB from "../db/users";
 import { getSalt, hashPassword } from "../helpers/hashPassword";
 
+
+// Validando q los datos sean correctos del usuario.
 export async function createUser(user: { email: string, password: string }) {
   if (!user.email || user.email.length < 5 || !user.email.includes('@')) {
     throw new Error('Invalid email');

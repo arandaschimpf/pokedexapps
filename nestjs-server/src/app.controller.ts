@@ -2,7 +2,8 @@ import { Controller, Param, Get ,Delete,Post,Body,Query} from '@nestjs/common';
 import { AppService } from './app.service';
 import { PokemonListResponse,Pokemon } from './pokemon.interface';
 
-@Controller('api/pokemon')
+// decoradores. 
+@Controller('api/pokemon') 
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
