@@ -21,9 +21,13 @@ export class PokemonController {
   }
 
   @Get()
-  getAllPokemon(@Query('page') page: number) {
+  async getAllPokemon(@Query('page') page: number) {
     const pageNumber = page ? page : 1;
-    return this.pokemonService.getAllPokemon(pageNumber);
+    const response = {
+      count: await this.pokemonService.pokemonPage(),
+      list: await this.pokemonService.getAllPokemon(pageNumber),
+    };
+    return response;
   }
 
   @Delete(':id')

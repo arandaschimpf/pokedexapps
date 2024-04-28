@@ -33,6 +33,10 @@ export class PokemonService {
     return pokemonSlice;
   }
 
+  async pokemonPage() {
+    return Math.ceil((await this.db.find({})).length / 5);
+  }
+
   deletePokemon(id: string) {
     return this.db.remove({ id: id }, {});
   }

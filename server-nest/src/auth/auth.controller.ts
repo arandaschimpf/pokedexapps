@@ -1,4 +1,4 @@
-import { Controller, Post, Res, Body } from '@nestjs/common';
+import { Controller, Post, Res, Body, Get } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from 'src/user/helpers/jwt.service';
@@ -28,5 +28,10 @@ export class AuthController {
     } catch (error) {
       return res.redirect('/login?error=true');
     }
+  }
+
+  @Get()
+  async getLogin() {
+    return '';
   }
 }

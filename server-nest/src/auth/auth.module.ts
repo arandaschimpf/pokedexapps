@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { UserService } from 'src/user/user.service';
 import { UserModule } from 'src/user/user.module';
-import { JwtService } from 'src/user/helpers/jwt.service';
+import { JwtServiceModule } from 'src/user/helpers/jwt.module';
+import { CookiesService } from 'src/user/helpers/redirectWithCookies.service';
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, JwtServiceModule],
   controllers: [AuthController],
-  providers: [UserService, JwtService],
+  providers: [CookiesService],
 })
 export class AuthModule {}

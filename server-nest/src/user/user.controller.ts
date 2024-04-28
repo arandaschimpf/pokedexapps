@@ -1,6 +1,14 @@
-import { Controller, Post, Res, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Res,
+  Body,
+  ValidationPipe,
+  Get,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('auth')
 export class UserController {
@@ -8,16 +16,19 @@ export class UserController {
 
   @Post('signup')
   async signUp(
-    @Body() body: { email: string; password: string },
+    @Body(ValidationPipe) user: CreateUserDto,
     @Res() res: Response,
   ) {
-    const { email, password } = body;
-
     try {
-      await this.usersService.createUser({ email, password });
-      return res.redirect('/login');
+      await this.usersService.createUser(user);
+      return res.redirect('/auth/login');
     } catch (error) {
-      return res.redirect('/signup?error=true');
+      return res.redirect('signup?error=true');
     }
+  }
+
+  @Get('login')
+  async getUser() {
+    return '';
   }
 }
