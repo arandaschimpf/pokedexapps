@@ -1,10 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import { LoginPage } from "../auth";
-import { PokemonPage } from "../pokemon";
+import PokemonPage from "../pokemon/pages/PokemonPage";
+
 
 
 export const AppRouter = () => {
     const authStatus = 'not-authenticated';
+
+
+
     return (
         <Routes>
             {

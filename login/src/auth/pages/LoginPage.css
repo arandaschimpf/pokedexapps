@@ -1,11 +1,10 @@
 .login-container{
-    margin-left: 10%;
+    margin-top: 15%;
 }
 .login-form-1{
     border-radius: 5px;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-    padding: 30%;
-    background: #fbfcfe;
+    padding: 5%;
 }
 .login-form-1 h3{
     text-align: center;
@@ -14,8 +13,8 @@
 .login-form-2{
     border-radius: 5px;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-    padding: 30%;
-    background: #000000;
+    padding: 5%;
+    background: #0062cc;
 }
 .login-form-2 h3{
     text-align: center;
@@ -26,18 +25,18 @@
 }
 .btnSubmit
 {
-    border-radius: 10rem;
-    padding: 12%;
+    border-radius: 1rem;
+    padding: 1.5%;
     border: none;
     cursor: pointer;
 }
 .login-form-1 .btnSubmit{
     color: #fff;
-    background-color: #000000;
+    background-color: #0062cc;
 }
 .login-form-2 .btnSubmit{
     background-color: #fff;
-    color: #000000;
+    color: #0062cc;
 }
 .login-form-2 .ForgetPwd{
     color: #fff;

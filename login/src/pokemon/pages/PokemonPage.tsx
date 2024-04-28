@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react"
+import { Navbar } from "../";
+import { useEffect, useState } from "react";
 
 type Pokemon = {
   id: number
   name: string
 }
 
-const BASE_URL = 'http://localhost:4000/api'
+const BASE_URL = 'http://localhost:4321/api'
 
-export default function App() {
+export default function PokemonPage() {
   const [list, setList] = useState<Pokemon[]>([])
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
