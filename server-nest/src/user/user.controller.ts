@@ -13,10 +13,12 @@ export class UserController {
     @Res() res: Response,
   ) {
     try {
+      console.log('ayuda');
       await this.usersService.createUser(user);
-      return res.redirect('/auth/login');
+      return res.status(200).send(true);
     } catch (error) {
-      return res.redirect('signup?error=true');
+      console.log(error);
+      return false;
     }
   }
 }
