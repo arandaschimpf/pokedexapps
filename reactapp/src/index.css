@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    background: url('./pokedex.jpg');
+}
+
+#form {
+    background: repeating-linear-gradient(-45deg,#fff 0 18px,#f3f3f3 0 40px);
+}
