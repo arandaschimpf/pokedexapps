@@ -28,6 +28,7 @@ export const getPokemonList = async (page?: number): Promise<{ list: Pokemon[], 
 }
 
 export const addPokemon = async (pokemon: Pokemon) => {
+  
   if (pokemonList.some((p) => p.id === pokemon.id)) {
     throw new Error('Pokemon already exists')
   }
@@ -37,6 +38,7 @@ export const addPokemon = async (pokemon: Pokemon) => {
 
 export const deletePokemon = async (pokemonId: number) => {
   const index = pokemonList.findIndex((pokemon) => pokemon.id === pokemonId)
+  console.log(index, pokemonId, typeof pokemonId)
   if (index === -1) {
     throw new Error('Pokemon not found')
   }

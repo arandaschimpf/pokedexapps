@@ -19,12 +19,10 @@ export class AppService {
 
   }
 
-  
 
-  
-
-  removePokemon(Pokemonid:number):Pokemon{
-    const index = this.pokemons.findIndex(pokemon => pokemon.id === Pokemonid);
+  removePokemon(pokemonid:number):Pokemon{
+    const index = this.pokemons.findIndex(pokemon => pokemon.id === pokemonid);
+    console.log(pokemonid, index, typeof pokemonid)
     if (index === -1){
       throw new Error('Pokemon not found.');
     }
@@ -40,6 +38,7 @@ export class AppService {
  }
 
  CreatePokemon(newPokemon: Pokemon) : Pokemon {
+  
   if (this.pokemons.some(pokemon => pokemon.id == newPokemon.id)){
     throw new Error ('Pokemon with this ID already exists');
   }

@@ -7,7 +7,6 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,13 +21,12 @@ export default function App() {
  
 
   //Add pokemons
-
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
 
       event.preventDefault();
       
       const formData = new FormData(event.currentTarget);
-      const id = formData.get('id');
+      const id = parseInt(formData.get('id')?.toString()!, 10);
       const name = formData.get('name');
   
   
