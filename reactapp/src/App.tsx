@@ -3,26 +3,35 @@ import { useState, useEffect } from "react";
 const BASE_URL = 'http://localhost:4321/api';
 
 export default function App() {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<Pokemon[]>([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const pageCount = Math.ceil(count / 5);
 
+  interface Pokemon {
+    id: number;
+    name: string;
+  }
+  
+ 
 
+  //Add pokemons
 
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    
-    const target = event.currentTarget as HTMLFormElement;
-    const id = target.id;
-    const name = target.name;
+
+      event.preventDefault();
+      
+      const formData = new FormData(event.currentTarget);
+      const id = formData.get('id');
+      const name = formData.get('name');
   
-    try {
+  
       const response = await fetch(`${BASE_URL}/pokemon`, {
         method: 'POST',
         headers: {
@@ -32,45 +41,54 @@ export default function App() {
       });
   
       if (response.ok) {
-        // If the request is successful, fetch the updated list of Pokémon
+       
         await fetchPokemon();
       } else {
         // Handle the case where the request fails
         // You can display an error message or perform other actions
         console.error('Failed to add Pokémon');
       }
-    } catch (error) {
-      // Handle network errors or other exceptions
-      console.error('Error adding Pokémon:', error);
-    }
-  }
+  } 
+    
+  
+    useEffect(() => {
+      const storedLoggedIn = localStorage.getItem('loggedIn');
+      if (storedLoggedIn === 'true') {
+        setLoggedIn(true);
+      }
+    }, [])
   
 
-  
+      useEffect(() => {
+        if (loggedIn) {
+          fetchPokemon();
+        }
+      }, [loggedIn, page]);
 
-  useEffect(() => {
-    if (loggedIn) {
-      fetchPokemon();
-    }
-  }, [loggedIn, page]);
+
 
   async function fetchPokemon() {
-    const response = await fetch(`${BASE_URL}/pokemon?page=${page}`);
-    const data = await response.json();
-    setList(data.list);
-    setCount(data.totalCount);
+      const response = await fetch(`${BASE_URL}/pokemon?page=${page}`);
+      const data = await response.json();
+      setList(data.list);
+      setCount(data.totalCount);
   }
 
+
+    
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (email === "test@example.com" && password === "hola") {
       setLoggedIn(true);
+      localStorage.setItem('loggedIn', 'true');
     } else {
       setError("Invalid email or password");
     }
   }
 
-  async function deletePokemon(id) {
+
+  
+  async function deletePokemon(id: number) {
     await fetch(`${BASE_URL}/pokemon/${id}`, {
       method: 'DELETE'
     });
@@ -82,6 +100,7 @@ export default function App() {
 
   function handleLogout() {
     setLoggedIn(false);
+    localStorage.removeItem('loggedIn');
     setList([]);
     setPage(1);
     setCount(0);
