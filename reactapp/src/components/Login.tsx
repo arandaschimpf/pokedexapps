@@ -1,7 +1,39 @@
+import { useState } from "react";
+import { BASE_URL } from "../App";
+
 export default function Login(){
+    const [redirected,setRedirected] = useState(false);
+
+
+    async function authUser(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const form = event. currentTarget
+        const data = new FormData(form)
+        const user = {
+            email : data.get('email') as string,
+            password : data.get('password') as string
+        }
+
+        const response = await fetch(`${BASE_URL}/auth`,{
+            method : 'POST', 
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(user)
+        })    
+        if (response.ok){
+            setRedirected(true);
+        }
+    } 
+
+    if (redirected){
+        window.location.href = 'http://localhost:5173/Home'
+    }
+    
     return(
 
-        <form action="/api/auth" method="post">
+        <form onSubmit={authUser}>
         <label form="email">Email</label>
         <input className="border px-2" type="email" id="email" name="email" required/>
         <label form="password">Password</label>

@@ -18,7 +18,6 @@ export class UsersService {
   
     if (!password || password.length < 8 ){
       throw new Error('Password too short');
-
     }
 
     const salt = getSalt();
@@ -29,6 +28,5 @@ export class UsersService {
     };
 
     return userDB.createUser(userWithHash);
-    
   }
 }

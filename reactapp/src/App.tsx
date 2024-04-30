@@ -5,7 +5,7 @@ type Pokemon = {
   name: string
 }
 
-const BASE_URL = 'http://localhost:4321/api'
+export const BASE_URL = 'http://localhost:4321/api'
 
 export default function App() {
   const [list, setList] = useState<Pokemon[]>([])

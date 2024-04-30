@@ -1,14 +1,13 @@
 import App from './App.tsx';
 import Signup from './components/Signup.tsx'
 import Login from './components/Login.tsx'
-
 import { BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
 
 
 export default function Index(){
     return(
       <Router>
-        <div className="index">
+        <div>
           <nav>
             <ul>
               <li>
@@ -30,7 +29,7 @@ export default function Index(){
             <Route path="/Home" Component={App} />
             <Route path="/Login" Component={Login} />
             <Route path="/register" Component={Signup} />
-            {/* <Route path="/logout" component={} /> */}
+            <Route Component={Index} />
           </Routes>
         </div>
       </Router>
