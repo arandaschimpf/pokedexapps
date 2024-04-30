@@ -2,6 +2,7 @@
 import { addPokemon, deletePokemon, getPokemonList, type Pokemon } from "@/services/pokemon"
 import { useEffect, useState } from "react"
 import PokemonForm from "./components/PokemonForm"
+import { fetchAPI } from "@/utils/fetchAPI"
 
 const BASE_URL = 'http://localhost:4000'
 
@@ -18,7 +19,7 @@ export default function App(props: AppProps) {
 
   useEffect(() => {
     let cancelled = false
-    getPokemonList(page)
+    fetchAPI(`pokemon?page=${page}`)
       .then((data) => {
         if (!cancelled) {
           setList(data.list)
