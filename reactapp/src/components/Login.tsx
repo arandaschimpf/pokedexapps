@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { BASE_URL } from "../App";
 
+
+// export const [auth,setAuth] = useState<Response>();
+
 export default function Login(){
     const [redirected,setRedirected] = useState(false);
 
@@ -24,13 +27,14 @@ export default function Login(){
         })    
         if (response.ok){
             setRedirected(true);
+            //setAuth(response);
         }
     } 
 
     if (redirected){
         window.location.href = 'http://localhost:5173/Home'
     }
-    
+
     return(
 
         <form onSubmit={authUser}>
@@ -40,9 +44,5 @@ export default function Login(){
         <input className="border px-2" type="password" id="password" name="password" required/>
         <button className="bg-red-600 text-white px-2 py-1" type="submit">Iniciar sesion</button>
         </form>
-
-
     )
-
-
 }
