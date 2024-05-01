@@ -9,6 +9,7 @@ export const POST: APIRoute = async (context) => {
 
   try {
     await createUser({ email, password })
+    // console.log(email, password)
     return context.redirect('/login')
   } catch (error) {
     return context.redirect('/signup?error=true')
