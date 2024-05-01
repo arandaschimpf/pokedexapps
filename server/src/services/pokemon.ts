@@ -18,7 +18,6 @@ export const getPokemonList = async (page?: number): Promise<{ list: Pokemon[], 
   if (!page) { return { list: pokemonList, count: pokemonList.length } }
   return { list: pokemonList.slice((page - 1) * 5, page * 5), count: pokemonList.length }
 }
-
 export const addPokemon = async (pokemon: Pokemon) => {
   if (pokemonList.some((p) => p.id === pokemon.id)) {
     throw new Error('Pokemon already exists')
