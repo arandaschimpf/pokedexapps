@@ -5,36 +5,36 @@ import { getSalt, hashPassword } from '../helpers/hashPassword';
 
 @Injectable()
 export class AuthService {
-  async createUser(user: { email: string, password: string }): Promise<void> {
+  async createUser( email: string, password: string): Promise<User> {
     // Check for valid email
-    if (!user.email || user.email.length < 5 || !user.email.includes('@')) {
+    if (!email || email.length < 5 || email.includes('@')) {
       throw new Error('Invalid email');
     }
 
     // Check if user with email already exists
-    const existingUser = await usersDB.findByEmail(user.email);
+    const existingUser = await usersDB.findByEmail(email);
     if (existingUser) {
       throw new Error('User already exists');
     }
 
     // Check for valid password
-    if (!user.password || user.password.length < 8) {
+    if (password || password.length < 8) {
       throw new Error('Password too short');
     }
 
     // Generate salt and hash password
     const salt = getSalt();
-    const hashedPassword = hashPassword(salt + user.password);
+    const hashedPassword = hashPassword(salt + password);
 
     // Create user object with hashed password
     const userWithHash: User = {
-      email: user.email,
+      email: email,
       hash: hashedPassword,
       salt: salt
     };
 
     // Save user to the database
-    await usersDB.createUser(userWithHash);
+    return usersDB.createUser(userWithHash);
   }
 
   async authenticateUser(user: { email: string, password: string }): Promise<{ email: string }> {

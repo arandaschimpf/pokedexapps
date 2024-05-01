@@ -18,8 +18,7 @@ export default function App() {
     name: string;
   }
   
- 
-
+  
   //Add pokemons
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
 
@@ -72,8 +71,9 @@ export default function App() {
       setCount(data.totalCount);
   }
 
+  
 
-    
+
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (email === "test@example.com" && password === "hola") {
@@ -83,6 +83,36 @@ export default function App() {
       setError("Invalid email or password");
     }
   }
+
+
+
+    const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      
+      const formData = new FormData(event.currentTarget);
+      const registerEmail = formData.get('email')?.toString();
+      const registerPassword = formData.get('password')?.toString();
+      const response = await fetch(`${BASE_URL}/auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: registerEmail, password: registerPassword })
+      });
+      
+    
+      if (response.ok) {
+        // User created successfully
+        // You can redirect the user to the login screen or show a success message
+        console.log('User created successfully');
+      } else {
+        // Handle errors
+        setError('Failed to create user');
+      }
+    };
+  
+
+
 
 
   
@@ -108,7 +138,8 @@ export default function App() {
 
   return (
     <main className="container mx-auto flex flex-col">
-      {!loggedIn ? (
+    {!loggedIn ? (
+      <div>
         <form onSubmit={handleLogin} className="mx-auto mt-8">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
           <input
@@ -135,6 +166,35 @@ export default function App() {
           </button>
           {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
+        <form onSubmit={handleRegister} className="mx-auto mt-8">
+            <h2 className="text-2xl font-bold mb-4">Register</h2>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+              required
+            />
+            <button
+              type="submit"
+              className="w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-blue-700"
+            >
+              Register
+            </button>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+          </form>
+
+      </div>
+        
+
+
       ) : (
         <div>
           <div className="flex justify-between items-center mb-4">
