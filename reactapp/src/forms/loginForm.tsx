@@ -7,6 +7,7 @@ const LOGIN = `http://localhost:${import.meta.env.VITE_API_PORT}/login`;
 
 const LoginForm: React.FC = () => { // Anotación para indicar que es un componente funcional
   const { authenticate, error } = useAuth(); // Obtener funciones y estado del contexto de autenticación
+  let hola = false;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => { // Anotación para el evento del formulario
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
@@ -29,6 +30,7 @@ const LoginForm: React.FC = () => { // Anotación para indicar que es un compone
       if (response.ok) {
         const data = await response.json();
         console.log("Respuesta exitosa:", data); // Verificar la respuesta
+        hola = true;
       } else {
         console.error("Error:", response.statusText); // Manejar errores
       }
@@ -60,7 +62,7 @@ const LoginForm: React.FC = () => { // Anotación para indicar que es un compone
         </div>
         <button 
           type="submit"
-          onClick={() => authenticate(true)}
+          onClick={() => authenticate(hola)}
           >
             Iniciar sesión
           </button> {/* Botón para enviar el formulario */}

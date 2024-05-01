@@ -7,6 +7,7 @@ const SIGN_UP = `http://localhost:4321/signup`;
 const SignUpForm: React.FC = () => { // Indicar que es un componente funcional
   // Manejador para el envío del formulario
   const { authenticate } = useAuth(); // Obtener funciones y estado del contexto de autenticación
+  let verificacion = false
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => { // Tipo del evento del formulario
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
 
@@ -26,6 +27,7 @@ const SignUpForm: React.FC = () => { // Indicar que es un componente funcional
       if (response.ok) {
         const data = await response.json(); // Obtener la respuesta como JSON
         console.log("Registro exitoso:", data); // Acción para registro exitoso
+        verificacion = true
       } else {
         console.log(response)
         console.error("Error al registrarse:", response.statusText); // Manejo de error
@@ -61,7 +63,7 @@ const SignUpForm: React.FC = () => { // Indicar que es un componente funcional
       <button
         className="bg-blue-600 text-white px-2 py-1"
         type="submit"
-        onClick={() => authenticate(true)}
+        onClick={() => authenticate(verificacion)}
       >
         Registrarse
       </button>
