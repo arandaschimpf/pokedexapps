@@ -1,11 +1,20 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const app = express();
-const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// Configurar middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
-app.listen(port, () => {
-  console.log(`Express app listening at http://localhost:${port}`);
+// Cargar y utilizar las rutas y lógica de Astro
+app.use('/', require('./src/pages/index.astro'));
+app.use('/login', require('./src/pages/login.astro'));
+// Agrega más rutas según sea necesario
+
+// Iniciar el servidor
+app.listen(3000, () => {
+  console.log('Servidor Express está corriendo en el puerto 3000');
 });
