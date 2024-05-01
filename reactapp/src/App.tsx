@@ -44,9 +44,6 @@ export default function App() {
 
     fetchClient(`api/pokemon`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(pokemon)
     })
 
