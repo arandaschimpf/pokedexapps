@@ -17,7 +17,7 @@ export function Pokedex() {
 
   useEffect(() => {
     let cancelled = false
-    fetch(`${BASE_URL}/pokemon?page=${page}`) //pokemon.json?page=${page}
+    fetch(`${BASE_URL}/pokemon?page=${page}`, {headers: {'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`}}) //pokemon.json?page=${page}
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
@@ -53,7 +53,8 @@ export function Pokedex() {
       const response = await fetch(`${BASE_URL}/pokemon`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
         },
         body: JSON.stringify(pokemon)
       });
@@ -84,7 +85,10 @@ export function Pokedex() {
 
   async function deletePokemon(id: string) {
     await fetch(`${BASE_URL}/pokemon/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+      }
     })
 
     setList(current => current.filter(pokemon => pokemon.id !== id))

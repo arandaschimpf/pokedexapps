@@ -6,11 +6,14 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { PokemonService } from './pokemon.service';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
+import { JwtGuard } from 'src/auth/guards/auth.guard';
 
+@UseGuards(JwtGuard)
 @Controller('pokemon')
 export class PokemonController {
   constructor(private pokemonService: PokemonService) {}

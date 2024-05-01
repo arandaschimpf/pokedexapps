@@ -25,15 +25,7 @@ export class AuthController {
       const jwt = this.jwtService.signJWT(user);
       return (
         res
-          .status(200)
-          // .cookie('user', jwt, {
-          //   maxAge: 60 * 60 * 24 * 1000,
-          //   httpOnly: false,
-          //   domain: 'localhost:5173',
-          //   sameSite: 'none',
-          //   secure: false,
-          // })
-          .send({
+          .status(200).send({
             accessToken: jwt,
           })
       );
