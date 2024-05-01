@@ -22,6 +22,9 @@ export default function Signup(){
                 },
                 body : JSON.stringify(user)
             })
+
+            form.reset();
+
             if (response.ok){
                 setRedirected(true);
             }

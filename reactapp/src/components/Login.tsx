@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { BASE_URL } from "../App";
-
-
-// export const [auth,setAuth] = useState<Response>();
+import { LOCALSTORAGE_TOKEN_KEY } from "../utils/fetchClient";
 
 export default function Login(){
     const [redirected,setRedirected] = useState(false);
-
 
     async function authUser(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -25,9 +22,12 @@ export default function Login(){
             },
             body : JSON.stringify(user)
         })    
+
+        form.reset();
         if (response.ok){
             setRedirected(true);
-            //setAuth(response);
+            const {token} = await response.json();
+            localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, token);
         }
     } 
 

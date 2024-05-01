@@ -15,6 +15,5 @@ export async function createUser(user:User): Promise<User>{
 }
 export async function findByEmail(email:string):Promise<User | null> {
     return db.findOne<User> ({email});
-
 }
 

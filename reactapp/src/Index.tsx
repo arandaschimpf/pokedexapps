@@ -2,9 +2,19 @@ import App from './App.tsx';
 import Signup from './components/Signup.tsx'
 import Login from './components/Login.tsx'
 import { BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
+import { LOCALSTORAGE_TOKEN_KEY } from './utils/fetchClient.ts';
 
 
 export default function Index(){
+
+    async function BorrarToken(event: React.MouseEvent<HTMLButtonElement>) {
+      event.preventDefault();
+      localStorage.removeItem(LOCALSTORAGE_TOKEN_KEY)
+      window.location.reload();
+      window.location.href = 'http://localhost:5173/login'
+
+
+    }
     return(
       <Router>
         <div>
@@ -20,7 +30,7 @@ export default function Index(){
                 <Link to="/register">Register</Link>
               </li>
               <li>
-                <Link to="">Logout</Link>
+                <button onClick={ BorrarToken }>Logout</button>
               </li>
             </ul>
           </nav>
