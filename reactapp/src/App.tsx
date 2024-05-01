@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 type Pokemon = {
   id: number
   name: string
 }
 
-const BASE_URL = 'http://localhost:4321/api'
+const BASE_URL = 'http://localhost:3000'
 
 export default function App() {
+  const [authenticated, setAuthenticated] = useState(false);
   const [list, setList] = useState<Pokemon[]>([])
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
@@ -15,7 +17,7 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false
-    fetch(`${BASE_URL}/pokemon.json?page=${page}`)
+    fetch(`${BASE_URL}/pokemon?page=${page}`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {
@@ -29,6 +31,11 @@ export default function App() {
     }
   }, [page])
 
+
+
+
+
+
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -39,7 +46,7 @@ export default function App() {
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    await fetch(`${BASE_URL}/pokemon`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,7 +62,7 @@ export default function App() {
   }
 
   async function deletePokemon(id: number) {
-    await fetch(`${BASE_URL}/pokemon/${id}.json`, {
+    await fetch(`${BASE_URL}/pokemon/${id}`, {
       method: 'DELETE'
     })
 
@@ -66,10 +73,16 @@ export default function App() {
       setPage(page - 1)
     }
   }
+ 
+
 
   return (
     <main className="container mx-auto flex flex-col">
 		<h1 className="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
+    <div className="absolute items-center top-0 right-0 m-4 p-2 bg-yellow-500 text-white rounded-lg font-bold uppercase duration-200 hover:bg-yellow-600">
+      <button><Link to={'/Login'}>Login</Link></button>
+    </div>
+
 		<form action="/api/pokemon" method="post" onSubmit={addPokemon}>
 			<h2 className="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
 			<input type="number" name="id" placeholder="ID" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
