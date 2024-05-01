@@ -7,7 +7,7 @@ type Pokemon = {
 
 const BASE_URL = 'http://localhost:3000'; // Cambiar la URL base al puerto donde está ejecutándose el servidor de NestJS
 
-export default function App() {
+export  default function App() {
   const [list, setList] = useState<Pokemon[]>([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
