@@ -1,13 +1,76 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { validarEmail } from "../helpers/validation";
+import { verifyJWT } from "../helpers/jwt";
+
+const cookie = Astro.request.headers.get("cookie");
+let token;
+// Si el usuario no ha iniciado sesión, redirígelos a la página de inicio de sesión
+if (cookie !== null) {
+  token = cookie.substring(cookie.indexOf("=") + 1);
+  console.log(token);
+  if (verifyJWT(token)) {
+    return Astro.redirect("/");
+  }
+}
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const email = data.get("email");
+    const password = data.get("password");
+
+    if (email !== null) {
+      validarEmail(email.toString());
+      Astro.redirect("/");
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
 ---
 
-<Layout title="inicio sesion">
-  <form action="/api/auth" method="post">
-    <label for="email">Email</label>
-    <input class="border px-2" type="email" id="email" name="email" required>
-    <label for="password">Password</label>
-    <input class="border px-2" type="password" id="password" name="password" required>
-    <button class="bg-red-600 text-white px-2 py-1" type="submit">Iniciar sesion</button>
-  </form>
-</Layout>
+<Layout title="Inicio Sesión">
+  <div class="flex justify-center items-center h-screen">
+    <form
+      action="/api/auth"
+      method="post"
+      class="w-full max-w-xs bg-white shadow-md rounded px-8 pt-6 pb-8"
+    >
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 font-bold mb-2"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+        />
+      </div>
+      <div class="mb-6">
+        <label for="password" class="block text-gray-700 font-bold mb-2"
+          >Contraseña</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+        />
+      </div>
+      <div class="flex items-center justify-between">
+        <button
+        type="submit"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >Iniciar Sesión</button
+        >
+      </div>
+    </form>
+  </div>
+</Layout>;
+
