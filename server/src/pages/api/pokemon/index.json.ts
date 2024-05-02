@@ -2,11 +2,13 @@ import type { APIRoute } from "astro";
 import { getPokemonList, addPokemon } from "../../../services/pokemon";
 
 export const GET: APIRoute = async (context) => {
+  const page = parseInt(context.url.searchParams)
+
   const pokemonList = await getPokemonList().catch(error => {
     return new Response(JSON.stringify({ error: error.message || 'Unknown error' }), {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*', 
       }
     });
   });
@@ -14,7 +16,7 @@ export const GET: APIRoute = async (context) => {
   return new Response(JSON.stringify(pokemonList), {
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': '*', //da permiso a otra url para que acceda a nuestro endpoint o protege
     }
   });
 };

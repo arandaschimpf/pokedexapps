@@ -14,5 +14,5 @@ export const POST: APIRoute = async (context) => {
   const pokemon = { id, name }
   await addPokemon(pokemon)
 
-  return context.redirect('/')
+  return context.redirect('/') //te redirecciona a la otra pagina pero siguiendo en la misma
 }
