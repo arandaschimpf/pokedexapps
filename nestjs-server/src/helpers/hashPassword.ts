@@ -7,4 +7,3 @@ export function getSalt() {
 export function hashPassword(password: string) {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
-// caracteres aleatorias para la password de vuelve lo mismo

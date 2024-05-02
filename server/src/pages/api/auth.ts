@@ -12,8 +12,8 @@ export const POST: APIRoute = async (context) => {
 
   try {
     const user = await authenticateUser({ email, password })
-    const jwt = signJWT(user)
-    return redirectWithCookies('/admin', [{ name: 'user', value: jwt, maxAge: 60 * 60 * 24 }])
+    const jwt = signJWT(user) // generar token
+    return redirectWithCookies('/admin', [{ name: 'user', value: jwt, maxAge: 60 * 60 * 24 }])// sesión durará un día, loguarse denuevo después del día
   } catch (error) {
     return context.redirect('/login?error=true')
   }

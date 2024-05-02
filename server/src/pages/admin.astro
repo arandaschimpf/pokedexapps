@@ -2,7 +2,7 @@
 import { verifyJWT } from "../helpers/jwt";
 import Layout from "../layouts/Layout.astro";
 
-const jwt = Astro.cookies.get("user");
+const jwt = Astro.cookies.get("user"); // traer el token
 if (!jwt?.value) {
   return Astro.redirect("/login");
 }

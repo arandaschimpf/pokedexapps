@@ -7,6 +7,7 @@ export type User = {
   hash: string;
   salt: string;
 };
+// salt, cadena aletatoria de caracteres, más díficil.
 
 export const createUser = async (user: User) => {
   return db.insert(user);
