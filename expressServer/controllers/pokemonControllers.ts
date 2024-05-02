@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { pokemonList, addPokemon, deletePokemon } from '../services/pokemon';
+import { pokemonList, addPokemon, deletePokemon } from '../src/services/pokemon';
 
 export const getPokemonListService = async (page: number = 1) => {
   try {

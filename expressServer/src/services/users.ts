@@ -1,5 +1,5 @@
-import type { User } from "../db/users";
-import * as usersDB from "../db/users";
+import type { User } from "../../db/users";
+import * as usersDB from "../../db/users";
 import { getSalt, hashPassword } from "../helpers/hashPassword";
 
 export async function createUser(user: { email: string, password: string }) {

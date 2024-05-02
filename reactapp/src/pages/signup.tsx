@@ -45,7 +45,7 @@ const Signup: React.FC = () => {
       // Registro exitoso, puedes redirigir al usuario a otra página o mostrar un mensaje de éxito
       console.log('Registro exitoso');
     } catch (error) {
-      console.error('Error de registro:');
+      console.error(error);
     }
   };
 

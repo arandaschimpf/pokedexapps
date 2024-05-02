@@ -4,6 +4,8 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { getPokemonListService, addPokemonService, deletePokemonService } from './controllers/pokemonControllers';
 import cors from 'cors';
+import { login, signup } from './src/api/controllers';
+import { authenticateUser, createUser } from './src/services/users';
 
 const app = express();
 const PORT = 3001;
@@ -12,6 +14,8 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
+// app.use(login);
+// app.use(signup);
 // Rutas
 // app.use('/pokemon', pokemonRouter);
 
@@ -21,12 +25,16 @@ app.get('/pokemon', async (req: Request, res: Response) => {
     const pokemonListResponse = await getPokemonListService(page);
     res.json(pokemonListResponse);
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
+    res.status(500).json({ error: (error as Error)});
   }
 });
 
 app.post('/pokemon', addPokemonService); // Aquí utilizamos directamente la función addPokemonService
 app.delete('/pokemon:id', deletePokemonService);
+
+app.get('/api/login', login);
+app.post('/api/signup', signup);
+
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);

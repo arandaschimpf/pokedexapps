@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { createUser, authenticateUser } from '../services/users'; // Importa las funciones de createUser y authenticateUser
-
+import { createUser, authenticateUser } from '../services/users'; 
 export async function signup(req: Request, res: Response) {
   const { email, password } = req.body;
 
