@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './app.module';
+import { AuthModule } from './auth.module';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 

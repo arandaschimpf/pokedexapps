@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../db/users';
 import * as usersDB from '../db/users';
 import { getSalt, hashPassword } from '../helpers/hashPassword';
+import * as jwt from 'jsonwebtoken'; // Import JWT library
 
 @Injectable()
 export class AuthService {
-  async createUser( email: string, password: string): Promise<User> {
+  async createUser(email: string, password: string): Promise<{ user: User; token: string }> {
     // Check for valid email
-    if (!email || email.length < 5 || email.includes('@')) {
+    if (!email || email.length < 5 || !email.includes('@')) {
       throw new Error('Invalid email');
     }
 
@@ -18,7 +19,7 @@ export class AuthService {
     }
 
     // Check for valid password
-    if (password || password.length < 8) {
+    if (!password || password.length < 8) {
       throw new Error('Password too short');
     }
 
@@ -34,7 +35,13 @@ export class AuthService {
     };
 
     // Save user to the database
-    return usersDB.createUser(userWithHash);
+    const newUser = await usersDB.createUser(userWithHash);
+
+    // Generate JWT token
+    const token = jwt.sign({ email: newUser.email }, 'your_secret_key', { expiresIn: '1h' });
+
+    // Return user and token
+    return { user: newUser, token: token };
   }
 
   async authenticateUser(user: { email: string, password: string }): Promise<{ email: string }> {

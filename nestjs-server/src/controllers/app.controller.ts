@@ -1,10 +1,10 @@
 import { Controller, Param, Get ,Delete,Post,Body,Query} from '@nestjs/common';
-import { AppService } from '../services/app.service';
+import { PokemonService } from '../services/app.service';
 import { PokemonListResponse,Pokemon } from '../interfaces/pokemon.interface';
 
 @Controller('api/pokemon')
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class PokemonController {
+  constructor(private readonly appService: PokemonService) {}
 
   @Delete(':Pokemonid')
   async deletePokemon(@Param('Pokemonid') id:string){

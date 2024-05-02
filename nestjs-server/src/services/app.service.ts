@@ -3,7 +3,7 @@ import {PokemonListResponse,Pokemon } from '../interfaces/pokemon.interface';
 
 
 @Injectable()
-export class AppService {
+export class PokemonService {
 
   pokemons : Pokemon[] = [
     { id: 1, name: 'Bulbasaur' },
