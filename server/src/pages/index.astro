@@ -2,11 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 import { getPokemonList } from '../services/pokemon';
 
+
 const { list } = await getPokemonList()
+const error = Astro.cookies.get("error")?.value;
+
 ---
 
 <Layout title="Pokedex">
 	<main class="container mx-auto flex flex-col">
+
 		<h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
 		<form action="/api/pokemon" method="post">
 			<h2 class="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>

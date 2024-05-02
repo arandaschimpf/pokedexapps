@@ -7,10 +7,13 @@ type Pokemon = {
 
 const BASE_URL = 'http://localhost:4321/api'
 
+
+
 export default function App() {
   const [list, setList] = useState<Pokemon[]>([])
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
+  const [error, setError] = useState<string>('')
   const pageCount = Math.ceil(count / 5)
 
   useEffect(() => {
@@ -27,18 +30,31 @@ export default function App() {
 
     const form = event.currentTarget
     const data = new FormData(form)
+
     const pokemon = {
       id: parseInt(data.get('id') as string),
       name: data.get('name') as string
     }
 
-    await fetch(`${BASE_URL}/pokemon.json`, {
+    const response = await fetch(`${BASE_URL}/pokemon.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(pokemon)
     })
+    
+    const obj = await response.json();
+    
+
+
+    if(obj.error) {
+      setError(obj.error);
+      return
+      
+    } 
+
+   
 
     form.reset()
     if (page === pageCount && list.length < 5) {
@@ -59,16 +75,27 @@ export default function App() {
       setPage(page - 1)
     }
   }
-
+    
   return (
     <main className="container mx-auto flex flex-col">
 		<h1 className="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
-		<form action="/api/pokemon" method="post" onSubmit={addPokemon}>
-			<h2 className="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
-			<input type="number" name="id" placeholder="ID" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<input type="text" name="name" placeholder="Name" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<button type="submit" className="w-full p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-red-700">Agregar</button>
-		</form>
+      <form action="/api/pokemon" method="post" onSubmit={addPokemon}>
+        <h2 className="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
+
+        {/* Display error message */}
+        
+        {error && (
+          
+            <div className="text-red-600 font-bold bg-red-100">
+                <p>{error}</p>
+            </div>
+        )}
+
+        <input type="number" name="id" placeholder="ID" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
+        <input type="text" name="name" placeholder="Name" className="my-1 w-full p-2 border border-gray-300 rounded-lg" />
+        <button type="submit" className="w-full p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-red-700">Agregar</button>
+    </form>
+			
 		<ul className="mt-4 border-4 border-red-700">
 			<li className="flex items-center justify-between border-b border-gray-300 p-2 bg-red-700">
 				<span className="text-lg text-white font-extrabold w-1/3">ID</span>
