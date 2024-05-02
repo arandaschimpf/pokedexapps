@@ -4,8 +4,8 @@ export default function Signup() {
     const BASE_URL2 = 'http://localhost:3000'
     const [error, setError] = React.useState('');
     const campoVacio: string = 'Complete todos los campos';
-    // const emailNoEncontrado: string = 'No se encontró el email';
-    // const contraseñaIncorrecta: string = 'Contraseña incorrecta';
+    /* const emailNoEncontrado: string = 'No se encontró el email';
+    const contraseñaIncorrecta: string = 'Contraseña incorrecta'; */
     async function crearCuenta(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const form = event.currentTarget
