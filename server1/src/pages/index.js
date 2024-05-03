@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getPokemonList } = require('../services/pokemon');
-const { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists } = require('../helpers/errors');
+const { getPokemonList, deletePokemon } = require('../services/pokemon');
+const { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists, pokemonNotFound } = require('../helpers/errors');
 
 router.get('/', async (req, res) => {
   try {
@@ -26,26 +26,24 @@ router.post('/api/pokemon', async (req, res) => {
   try {
     const { id, name } = req.body;
 
-    // Lógica para agregar un nuevo Pokémon
-    // ...
+    // Verificar si el Pokémon ya existe en la base de datos
+    const existingPokemon = await getPokemonById(id);
+    if (existingPokemon) {
+      throw new Error(pokemonAlreadyExists);
+    }
 
-    res.redirect('/', {
-      cookies: {
-        body: JSON.stringify({ id, name }),
-        error: null
-      }
-    });
+    // Crear el nuevo Pokémon en la base de datos
+    await createPokemon({ id, name });
+
+    // Redirigir a la página principal con un mensaje de éxito
+    res.cookie('error', null);
+    res.redirect('/');
   } catch (err) {
     console.error(err);
     res.cookie('error', err.message);
     res.redirect('/');
   }
 });
-
-const express = require('express');
-const router = express.Router();
-const { getPokemonList, deletePokemon } = require('../services/pokemon');
-const { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists, pokemonNotFound } = require('../helpers/errors');
 
 router.post('/api/pokemon/:id', async (req, res) => {
   try {

@@ -1,21 +1,28 @@
-import type { APIRoute } from "astro"
-import { authenticateUser } from "../../services/users"
-import { redirectWithCookies } from "../../helpers/redirectWithCookies"
-import { signJWT } from "../../helpers/jwt"
+const express = require('express');
+const router = express.Router();
+const { authenticateUser } = require('../../services/users');
+const { signJWT } = require('../../helpers/jwt');
 
-
-export const POST: APIRoute = async (context) => {
-  const data = await context.request.formData()
-
-  const email = data.get('email') as string
-  const password = data.get('password') as string
-
+router.post('/api/auth', async (req, res) => {
   try {
-    const user = await authenticateUser({ email, password })
-    const jwt = signJWT(user)
-    return redirectWithCookies('/admin', [{ name: 'user', value: jwt, maxAge: 60 * 60 * 24 }])
-  } catch (error) {
-    return context.redirect('/login?error=true')
-  }
+    const { email, password } = req.body;
 
-}
+    // Autenticar al usuario
+    const user = await authenticateUser({ email, password });
+    if (!user) {
+      return res.redirect('/login?error=true');
+    }
+
+    // Generar un token JWT
+    const jwt = signJWT(user);
+
+    // Redirigir al usuario a la página de administrador con el token en una cookie
+    res.cookie('user', jwt, { maxAge: 60 * 60 * 24 }); // Ejemplo: cookie con tiempo de vida de 24 horas
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al autenticar al usuario');
+  }
+});
+
+module.exports = router;

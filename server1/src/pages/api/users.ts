@@ -1,17 +1,18 @@
-import type { APIRoute } from "astro"
-import { createUser } from "../../services/users"
+const { createUser } = require('../../services/users');
 
-export const POST: APIRoute = async (context) => {
-  const data = await context.request.formData()
-
-  const email = data.get('email') as string
-  const password = data.get('password') as string
-
+router.post('/api/users', async (req, res) => {
   try {
-    await createUser({ email, password })
-    return context.redirect('/login')
-  } catch (error) {
-    return context.redirect('/signup?error=true')
-  }
+    const { email, password } = req.body;
 
-}
+    // Crear un nuevo usuario
+    await createUser({ email, password });
+
+    // Redirigir al usuario a la página de inicio de sesión
+    res.redirect('/login');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/signup?error=true');
+  }
+});
+
+module.exports = router;
