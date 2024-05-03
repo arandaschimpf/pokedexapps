@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Cargar y utilizar las rutas y lógica de Astro
-app.use('/', require('./src/pages/index.astro'));
-app.use('/login', require('./src/pages/login.astro'));
+app.use('/', require('./src/pages/index.js'));
+app.use('/login', require('./src/pages/login.js'));
 // Agrega más rutas según sea necesario
 
 // Iniciar el servidor

@@ -1,6 +1,8 @@
+const router1 = express.Router();
+
 const { createUser } = require('../../services/users');
 
-router.post('/api/users', async (req, res) => {
+router1.post('/api/users', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -15,4 +17,4 @@ router.post('/api/users', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router1;
