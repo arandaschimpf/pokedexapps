@@ -10,16 +10,24 @@ import { Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+
   @Post('login')
   async login(@Body() credentials: { email: string; password: string }, @Res() res: any) {
     try {
       const token = await this.authService.authenticateUser(credentials);
+      // Set the token as a cookie (optional)
       res.cookie('user', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true });
-      return res.redirect('/login');
+      // Return the token in the response body
+      return res.status(HttpStatus.OK).json({ token });
     } catch (error) {
-     // return res.redirect('/api/auth/login');
+      // Handle authentication errors
+      return res.status(HttpStatus.UNAUTHORIZED).json({ error: 'Invalid credentials' });
     }
   }
+  
+  
+  
+  
 
   @Post('register')
   async register(@Body() Body: { email: string; password: string }, @Res() res: Response) {

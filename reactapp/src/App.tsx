@@ -144,7 +144,9 @@ export default function App() {
   }
 
   return (
-    <main className="container mx-auto flex flex-col">
+   
+  <div className="bg-gradient-to-r from-purple-500 to-pink-500 min-h-screen">
+    <main className="container mx-auto flex flex-col " >
       {!loggedIn ? (
         <div>
           <form onSubmit={handleLogin} className="mx-auto mt-8">
@@ -167,7 +169,7 @@ export default function App() {
             />
             <button
               type="submit"
-              className="w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-blue-700"
+              className="w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-yellow-700"
             >
               Login
             </button>
@@ -191,7 +193,7 @@ export default function App() {
             />
             <button
               type="submit"
-              className="w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-blue-700"
+              className=" w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-yellow-700"
             >
               Register
             </button>
@@ -245,5 +247,6 @@ export default function App() {
         </div>
       )}
     </main>
+    </div>
   );
 }
