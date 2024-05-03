@@ -115,11 +115,11 @@ export default function App() {
   }
 
   return (
-    <main className="container mx-auto flex flex-col">
+    <main className="container mx-auto flex flex-col justify-center items-center min-h-screen">
       {!loggedIn ? (
-        <div className="flex justify-between">
-          <div className="flex-1 mr-2">
-            <form onSubmit={handleLogin} className="mx-auto mt-8">
+        <div className="flex justify-end items-center min-h-screen mr-62">
+          <div className="flex justify-between">
+            <form onSubmit={handleLogin} className="w-64 h-64 mr-12">
               <h2 className="text-2xl font-bold mb-4">Login</h2>
               <input
                 type="email"
@@ -150,7 +150,7 @@ export default function App() {
           {/* Sign Up */}
 
           <div className="flex-1 ml-2">
-            <form onSubmit={handleSignup} className="mx-auto mt-8">
+            <form onSubmit={handleSignup} className="w-64 h-64 mr">
               <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
               <input
                 type="email"
