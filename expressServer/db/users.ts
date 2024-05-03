@@ -1,7 +1,6 @@
 import Datastore from 'nedb-promises';
 
 const db = Datastore.create({ filename: './users.db' });
-
 export type User = {
   email: string;
   hash: string;

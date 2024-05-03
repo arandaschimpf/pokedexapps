@@ -28,6 +28,7 @@ export const deletePokemonService = async (req: Request, res: Response) => {
   try {
     // Implementación de deletePokemon utilizando la información de la solicitud
     const { id } = req.params;
+    console.log(id)
     const pokemonId = parseInt(id);
     const deletedPokemon = await deletePokemon(pokemonId);
     res.json(deletedPokemon);

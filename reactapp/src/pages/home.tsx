@@ -68,7 +68,7 @@ export default function Home() {
   }
 
   return (
-    <main className="container mx-auto flex flex-col">
+    <main className="mx-20 flex flex-col">
 		<h1 className="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
     <div className="flex justify-between">
       <a href="/login" className="bg-red-600 text-white py-2 px-4 rounded-lg font-bold uppercase duration-200 hover:bg-red-700">Login</a>
