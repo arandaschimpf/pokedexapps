@@ -15,9 +15,9 @@ export class AuthController {
     try {
       const token = await this.authService.authenticateUser(credentials);
       res.cookie('user', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true });
-      return res.redirect('/admin');
+      return res.redirect('/login');
     } catch (error) {
-      return res.redirect('/login?error=true');
+     // return res.redirect('/api/auth/login');
     }
   }
 

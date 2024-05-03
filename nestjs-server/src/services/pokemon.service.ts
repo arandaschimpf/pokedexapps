@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {PokemonListResponse,Pokemon } from '../interfaces/pokemon.interface';
 
 
+
 @Injectable()
 export class PokemonService {
 

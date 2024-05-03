@@ -1,5 +1,5 @@
 import { Controller, Param, Get ,Delete,Post,Body,Query} from '@nestjs/common';
-import { PokemonService } from '../services/app.service';
+import { PokemonService } from '../services/pokemon.service'
 import { PokemonListResponse,Pokemon } from '../interfaces/pokemon.interface';
 
 @Controller('api/pokemon')

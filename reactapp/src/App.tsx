@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const BASE_URL = 'http://localhost:4321/auth';
+const BASE_URL = 'http://localhost:4321/api';
 
 export default function App() {
   const [list, setList] = useState<Pokemon[]>([]);
@@ -75,9 +75,9 @@ export default function App() {
     const formData = new FormData(event.currentTarget);
     const loginEmail = formData.get('email')?.toString();
     const loginPassword = formData.get('password')?.toString();
-  
+    
     // Make a request to the login endpoint with the entered email and password
-    const response = await fetch(`${BASE_URL}/api/auth/login`, {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
