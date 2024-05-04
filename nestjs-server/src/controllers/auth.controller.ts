@@ -21,7 +21,7 @@ export class AuthController {
       return res.status(HttpStatus.OK).json({ token });
     } catch (error) {
       // Handle authentication errors
-      return res.status(HttpStatus.UNAUTHORIZED).json({ error: 'Invalid credentials' });
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Invalid credentials' });
     }
   }
   

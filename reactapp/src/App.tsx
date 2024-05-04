@@ -86,14 +86,20 @@ export default function App() {
     });
   
     if (response.ok) {
-      // Set the loggedIn state to true and store it in local storage
+      // Retrieve the JWT token from the response
+      const { token } = await response.json();
+      // Set the loggedIn state to true
       setLoggedIn(true);
+      // Store the JWT token in local storage
+      localStorage.setItem('token', token);
+      // Store the loggedIn state in local storage
       localStorage.setItem('loggedIn', 'true');
     } else {
       // Handle login errors
       setError("Invalid email or password");
     }
   }
+
   
   
 
@@ -145,36 +151,39 @@ export default function App() {
 
   return (
    
-  <div className="bg-gradient-to-r from-purple-500 to-pink-500 min-h-screen">
+  <div className="bg-gradient-to-r from-cyan-500 to-blue-500 from-purple-500 to-pink-500 min-h-screen">
     <main className="container mx-auto flex flex-col " >
       {!loggedIn ? (
         <div>
-          <form onSubmit={handleLogin} className="mx-auto mt-8">
-            <h2 className="text-2xl font-bold mb-4">Login</h2>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-yellow-700"
-            >
-              Login
-            </button>
-            {error && <p className="text-red-500 mt-2">{error}</p>}
-          </form>
+         <form onSubmit={handleLogin} className="mx-auto mt-8">
+              <h2 className="text-2xl font-bold mb-4">Login</h2>
+              <input
+                type="email"
+                name="email" // Add name attribute
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                required
+              />
+              <input
+                type="password"
+                name="password" // Add name attribute
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full p-2 bg-blue-600 text-white rounded-lg font-bold uppercase duration-200 hover:bg-yellow-700"
+              >
+                Login
+              </button>
+              {error && <p className="text-red-500 mt-2">{error}</p>}
+            </form>
+
           <form onSubmit={handleRegister} className="mx-auto mt-8">
             <h2 className="text-2xl font-bold mb-4">Register</h2>
             <input
