@@ -127,14 +127,19 @@ export default function App() {
   };
 
   async function deletePokemon(id: number) {
-    await fetch(`${BASE_URL}/pokemon/${id}`, {
+    const response = await fetch(`${BASE_URL}/pokemon/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`, 
       },
     });
-    setList(currentList => currentList.filter(pokemon => pokemon.id !== id));
-    setCount(currentCount => currentCount - 1);
+  
+    if (response.ok) {
+      setList(currentList => currentList.filter(pokemon => pokemon.id !== id));
+      setCount(currentCount => currentCount - 1);
+    } else {
+      console.error('Failed to delete pokemon');
+    }
   }
 
   function handleLogout() {
@@ -155,7 +160,16 @@ export default function App() {
   }
 
   return (
-    <main className="container mx-auto flex flex-col justify-center items-center min-h-screen">
+    <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-white">
+      <h2 className="text-7xl font-bold mb-4 text-center w-full absolute top-36">
+        <span className="text-red-500" style={{textShadow: '2px 2px #000'}}>P</span>
+        <span className="text-blue-500" style={{textShadow: '2px 2px #000'}}>O</span>
+        <span className="text-red-500" style={{textShadow: '2px 2px #000'}}>K</span>
+        <span className="text-blue-500" style={{textShadow: '2px 2px #000'}}>E</span>
+        <span className="text-red-500" style={{textShadow: '2px 2px #000'}}>D</span>
+        <span className="text-blue-500" style={{textShadow: '2px 2px #000'}}>E</span>
+        <span className="text-red-500" style={{textShadow: '2px 2px #000'}}>X</span>
+      </h2>
       {!loggedIn ? (
         <div className="flex justify-end items-center min-h-screen">
           <div className="flex justify-between">
@@ -254,7 +268,6 @@ export default function App() {
               <button onClick={handleLogout} className="p-2 bg-purple-800 text-white rounded-lg font-bold uppercase duration-200 hover:bg-purple-700 ml-6">Logout</button>
             </div>
           </div>
-          <h1 className="text-5xl text-purple-800 font-extrabold text-center mb-4">Pokedex</h1>
           <ul className="mt-4 border-4 border-purple-800">
             <li className="flex items-center justify-between border-b border-gray-300 p-2 bg-purple-800">
               <span className="text-lg text-white font-extrabold w-1/3">ID</span>
