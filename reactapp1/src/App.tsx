@@ -235,7 +235,7 @@ export default function App() {
       ) : (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <form onSubmit={addPokemon} className="flex gap-2">
+            <form onSubmit={addPokemon} className="flex gap-8">
               <input
                 type="number"
                 name="id"
@@ -251,7 +251,7 @@ export default function App() {
               <button type="submit" className="p-2 bg-purple-800 text-white rounded-lg font-bold uppercase duration-200 hover:bg-purple-700">Add Pokémon</button>
             </form>
             <div>
-              <button onClick={handleLogout} className="p-2 bg-purple-800 text-white rounded-lg font-bold uppercase duration-200 hover:bg-purple-700">Logout</button>
+              <button onClick={handleLogout} className="p-2 bg-purple-800 text-white rounded-lg font-bold uppercase duration-200 hover:bg-purple-700 ml-6">Logout</button>
             </div>
           </div>
           <h1 className="text-5xl text-purple-800 font-extrabold text-center mb-4">Pokedex</h1>
