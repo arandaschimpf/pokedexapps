@@ -10,7 +10,8 @@ export default function App() {
   const [loginEmail, setloginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(''); 
-  const [error, setError] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [signUpError, setSignUpError] = useState('');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
@@ -93,7 +94,7 @@ export default function App() {
       localStorage.setItem('token', token);
       localStorage.setItem('loggedIn', 'true');
     } else {
-      setError("Invalid email or password");
+      setLoginError("Invalid email or password");
     }
   }
 
@@ -105,7 +106,7 @@ export default function App() {
     const confirmPassword = formData.get('confirmPassword')?.toString();
   
     if (signUpPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      setSignUpError('Passwords do not match');
       return;
     }
   
@@ -119,8 +120,9 @@ export default function App() {
   
     if (response.ok) {
       setSuccessMessage('User created successfully');
+      setSignUpError('');
     } else {
-      setError('Failed to create user');
+      setSignUpError('Failed to create user');
     }
   };
 
@@ -147,7 +149,8 @@ export default function App() {
     setConfirmPassword('');
     setSignUpEmail('');
     setSignUpPassword('');
-    setError('');
+    setLoginError('');
+    setSignUpError('');
     setSuccessMessage('');
   }
 
@@ -182,6 +185,7 @@ export default function App() {
               >
                 Login
               </button>
+              {loginError && <p className="text-red-500 mt-2">{loginError}</p>}
             </form>
           </div>
 
@@ -224,7 +228,7 @@ export default function App() {
                 Sign Up
               </button>
               {successMessage && <p className="text-green-500">{successMessage}</p>}
-              {error && <p className="text-red-500 mt-2">{error}</p>}
+              {signUpError && <p className="text-red-500 mt-2">{signUpError}</p>}
             </form>
           </div>
         </div>
