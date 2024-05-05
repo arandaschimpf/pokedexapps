@@ -11,6 +11,7 @@ export default function App() {
   const [loginPassword, setLoginPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(''); 
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
   const [token, setToken] = useState<string | null>(null);
@@ -117,7 +118,7 @@ export default function App() {
     });
   
     if (response.ok) {
-      console.log('User created');
+      setSuccessMessage('User created successfully');
     } else {
       setError('Failed to create user');
     }
@@ -144,6 +145,10 @@ export default function App() {
     setloginEmail('');
     setLoginPassword('');
     setConfirmPassword('');
+    setSignUpEmail('');
+    setSignUpPassword('');
+    setError('');
+    setSuccessMessage('');
   }
 
   return (
@@ -218,6 +223,7 @@ export default function App() {
               >
                 Sign Up
               </button>
+              {successMessage && <p className="text-green-500">{successMessage}</p>}
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
           </div>

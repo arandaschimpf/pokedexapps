@@ -1,2 +1,5 @@
 {"email":"gabriel.blanco@gmail.com","hash":"9bdbc5db05b5c8b4b162173b81977f856411fdef567c821899046c6f9a043a89","salt":"c21002680392bbbd434e753458525603","_id":"eSyFKQ0y6IvPLwDj"}
 {"email":"test@example.com","hash":"a4e7d594f8ab8aeee81fec2066ebddee6aa68e97ab4035cf6a157a9bfad0f68f","salt":"d894c68ede6bddcc7bf43e760968f171","_id":"dk6IAyf6I70hzFTp"}
+{"email":"lucas.sand@uap.edu.ar","hash":"47739fea2be4dec0d6649beac5f4911177dd722a31d7c5d5bcbb3acdea7ba11c","salt":"acf7f5ff913dd28669c337292f683bd5","_id":"L7WTRF3rHhKeNgmC"}
+{"email":"damian.frick@uap.edu.ar","hash":"b13944ed280e218a38b47130ce260b4d765945464718b9e2612adf015f3c1f8b","salt":"cc40d77f7860306459e91a311f78ab19","_id":"U4IIQn8ArKGg6oOE"}
+{"email":"sebastian.perez@uap.edu.ar","hash":"a30c454efda5aa9d5a905ebfe44bb209de32e1d04f33f182a074c84e30f313c8","salt":"dc0ca9bd4cc963ed7a9e61d5036cc964","_id":"bkLXkR1gQFKdELTi"}
