@@ -2,33 +2,38 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../db/users';
 import * as usersDB from '../db/users';
 import { getSalt, hashPassword } from '../helpers/hashPassword';
+import * as jwt from 'jsonwebtoken'; 
 
 @Injectable()
 export class AuthService {
-  async createUser(user: { email: string, password: string }): Promise<void> {
-    if (!user.email || user.email.length < 5 || !user.email.includes('@')) {
+  async createUser(email: string, password: string): Promise<{ user: User; token: string }> {
+    if (!email || email.length < 5 || !email.includes('@')) {
       throw new Error('Invalid email');
     }
 
-    const existingUser = await usersDB.findByEmail(user.email);
+    const existingUser = await usersDB.findByEmail(email);
     if (existingUser) {
       throw new Error('User already exists');
     }
 
-    if (!user.password || user.password.length < 8) {
+    if (!password || password.length < 8) {
       throw new Error('Password too short');
     }
 
     const salt = getSalt();
-    const hashedPassword = hashPassword(salt + user.password);
+    const hashedPassword = hashPassword(salt + password);
 
     const userWithHash: User = {
-      email: user.email,
+      email: email,
       hash: hashedPassword,
       salt: salt
     };
 
-    await usersDB.createUser(userWithHash);
+    const newUser = await usersDB.createUser(userWithHash);
+
+    const token = jwt.sign({ email: newUser.email }, 'your_secret_key', { expiresIn: '1h' });
+
+    return { user: newUser, token: token };
   }
 
   async authenticateUser(user: { email: string, password: string }): Promise<{ email: string }> {
@@ -41,6 +46,7 @@ export class AuthService {
     if (hashedPassword !== existingUser.hash) {
       throw new Error('Invalid password');
     }
+
     return { email: existingUser.email };
   }
 }

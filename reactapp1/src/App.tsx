@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"; 
+
 const BASE_URL = 'http://localhost:4321/api';
 
 export default function App() {
@@ -12,12 +13,39 @@ export default function App() {
   const [error, setError] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
+  const [token, setToken] = useState<string | null>(null);
 
   const pageCount = Math.ceil(count / 5);
 
   interface Pokemon {
     id: number;
     name: string;
+  }
+
+  useEffect(() => {
+    const storedLoggedIn = localStorage.getItem('loggedIn');
+    const storedToken = localStorage.getItem('token');
+    if (storedLoggedIn === 'true') {
+      setLoggedIn(true);
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      fetchPokemon();
+    }
+  }, [loggedIn, page]);
+
+  async function fetchPokemon() {
+    const response = await fetch(`${BASE_URL}/pokemon?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    setList(data.list);
+    setCount(data.totalCount);
   }
 
   async function addPokemon(event: React.FormEvent<HTMLFormElement>) {
@@ -30,7 +58,8 @@ export default function App() {
     const response = await fetch(`${BASE_URL}/pokemon`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ id, name })
     });
@@ -38,66 +67,68 @@ export default function App() {
     if (response.ok) {
       await fetchPokemon();
     } else {
-      console.error('Failed to add Pokémon');
+      console.error('Failed to add pokemon');
     }
-  }
-
-  useEffect(() => {
-    const storedLoggedIn = localStorage.getItem('loggedIn');
-    if (storedLoggedIn === 'true') {
-      setLoggedIn(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
-      fetchPokemon();
-    }
-  }, [loggedIn, page]);
-
-  async function fetchPokemon() {
-    const response = await fetch(`${BASE_URL}/pokemon?page=${page}`);
-    const data = await response.json();
-    setList(data.list);
-    setCount(data.totalCount);
   }
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (loginEmail === "gabriel.blanco@gmail.com" && loginPassword === "123456") {
+    
+    const formData = new FormData(event.currentTarget);
+    const loginEmail = formData.get('email')?.toString();
+    const loginPassword = formData.get('password')?.toString();
+    
+    const response = await fetch(`${BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: loginEmail, password: loginPassword })
+    });
+  
+    if (response.ok) {
+      const { token } = await response.json();
       setLoggedIn(true);
+      localStorage.setItem('token', token);
       localStorage.setItem('loggedIn', 'true');
     } else {
       setError("Invalid email or password");
     }
   }
 
-  async function handleSignup(event: React.FormEvent<HTMLFormElement>) {
+  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const signUpEmail = formData.get('email')?.toString();
+    const signUpPassword = formData.get('password')?.toString();
+    const confirmPassword = formData.get('confirmPassword')?.toString();
+  
     if (signUpPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       return;
     }
-
-    const response = await fetch(`${BASE_URL}/register`, {
+  
+    const response = await fetch(`${BASE_URL}/auth/register`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ signUpEmail, signUpPassword })
+      body: JSON.stringify({ email: signUpEmail, password: signUpPassword }),
     });
-
+  
     if (response.ok) {
-      setLoggedIn(true);
-      localStorage.setItem('loggedIn', 'true');
+      console.log('User created');
     } else {
-      setError("Failed to sign up");
+      setError('Failed to create user');
     }
-  }
+  };
 
   async function deletePokemon(id: number) {
     await fetch(`${BASE_URL}/pokemon/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
     });
     setList(currentList => currentList.filter(pokemon => pokemon.id !== id));
     setCount(currentCount => currentCount - 1);
@@ -106,6 +137,7 @@ export default function App() {
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('token');
     setList([]);
     setPage(1);
     setCount(0);
@@ -117,13 +149,14 @@ export default function App() {
   return (
     <main className="container mx-auto flex flex-col justify-center items-center min-h-screen">
       {!loggedIn ? (
-        <div className="flex justify-end items-center min-h-screen mr-62">
+        <div className="flex justify-end items-center min-h-screen">
           <div className="flex justify-between">
-            <form onSubmit={handleLogin} className="w-64 h-64 mr-12">
+          <form onSubmit={handleLogin} className="w-64 h-80 mr-4 bg-white border border-gray-300 shadow-md p-4 flex flex-col justify-center items-center">
               <h2 className="text-2xl font-bold mb-4">Login</h2>
               <input
                 type="email"
                 placeholder="Email"
+                name="email"
                 value={loginEmail}
                 onChange={(e) => setloginEmail(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mb-4"
@@ -132,6 +165,7 @@ export default function App() {
               <input
                 type="password"
                 placeholder="Password"
+                name= "password"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mb-4"
@@ -143,18 +177,18 @@ export default function App() {
               >
                 Login
               </button>
-              {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
           </div>
 
           {/* Sign Up */}
 
           <div className="flex-1 ml-2">
-            <form onSubmit={handleSignup} className="w-64 h-64 mr">
+            <form onSubmit={handleSignup} className="w-64 h-80 bg-white border border-gray-300 shadow-md p-4">
               <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
               <input
                 type="email"
                 placeholder="Email"
+                name="email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mb-4"
@@ -163,6 +197,7 @@ export default function App() {
               <input
                 type="password"
                 placeholder="Password"
+                name="password"
                 value={signUpPassword}
                 onChange={(e) => setSignUpPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mb-4"
@@ -171,6 +206,7 @@ export default function App() {
               <input
                 type="password"
                 placeholder="Confirm Password"
+                name="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mb-4"
