@@ -12,7 +12,7 @@ export const POST: APIRoute = async (context) => {
 
   try {
     const user = await authenticateUser({ email, password })
-    const jwt = signJWT(user)
+    const jwt = signJWT(user) // Generar un nuevo token
     return redirectWithCookies('/admin', [{ name: 'user', value: jwt, maxAge: 60 * 60 * 24 }])
   } catch (error) {
     return context.redirect('/login?error=true')
