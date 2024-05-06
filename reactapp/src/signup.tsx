@@ -1,5 +1,5 @@
 import React from "react";
-
+// 
 export default function Signup() {
     const BASE_URL2 = 'http://localhost:3000'
     const [error, setError] = React.useState('');
