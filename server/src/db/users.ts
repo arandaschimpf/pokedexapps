@@ -12,6 +12,8 @@ export const createUser = async (user: User) => {
   return db.insert(user);
 };
 
+
+
 export const findByEmail = async (email: string) => {
   return db.findOne<User>({ email });
 }
