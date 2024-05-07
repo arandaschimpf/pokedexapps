@@ -1,4 +1,4 @@
-import Datastore from 'nedb-promises';
+import Datastore from 'nedb-promises'
 
 const db = Datastore.create({ filename: './users.db' });
 
