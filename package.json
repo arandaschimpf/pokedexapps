@@ -2,5 +2,8 @@
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
     "nedb-promises": "^6.2.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.4"
   }
 }

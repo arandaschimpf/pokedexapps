@@ -13,10 +13,16 @@
     "@astrojs/check": "^0.5.10",
     "@astrojs/tailwind": "^5.1.0",
     "astro": "^4.5.10",
+<<<<<<< HEAD
+=======
+    "jsonwebtoken": "^9.0.2",
+>>>>>>> 974d7c4cecbf8e1f22438eb0e1d53ffab4a5d268
+    "nedb-promises": "^6.2.3",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.4",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.7"
   }
