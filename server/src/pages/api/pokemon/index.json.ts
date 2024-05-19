@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { addPokemon, getPokemonList } from "../../../services/pokemon"
+// import { resolveProjectReferencePath } from "typescript"
 
 export const GET: APIRoute = async (context) => {
   const page = parseInt(context.url.searchParams.get('page') ?? '1', 10)
