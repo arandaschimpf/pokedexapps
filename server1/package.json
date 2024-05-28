@@ -1,0 +1,26 @@
+{
+  "name": "server1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "nedb-promises": "^6.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.8",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  },
+  "description": ""
+}
