@@ -3,9 +3,11 @@ fetch("http://localhost:4321/api/pokemon.json")
 .then(response => response.json())
 .then(data => {
     console.log(data)
-    data.forEach(pokemon => {
-        addPokeLine(pokemon)
-    });
+
+    for( let i in data.pokemonList){
+        addPokeLine(data.pokemonList[i])
+        console.log(data.pokemonList[i])
+    }
     
 })
 
