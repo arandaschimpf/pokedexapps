@@ -1,24 +1,22 @@
 # Pokedex
 
-## Instrucciones
+> ***Important!!! The proyect is on another repository... Again!?***
 
-Tienen 2 carpetas,
-* una aplicación cliente, que por ahora es un html sin javascript, con un servidor minimo
-* una aplicación servidor, hecha en Astro, que está funcionando sin usar js en el cliente
 
-Ambas pueden iniciarse corriendo el comando `npm run dev` en cada carpeta, luego de haber instalado las dependencias en cada una usando `npm install`.
+## Pokedex is here ↓
 
-Queremos agregarle funcionalidad a la aplicación cliente, de manera que tenga las mismas funciones que la aplicación servidor actual, pero usando javascript en el cliente.
+[DylanRoth5/Pokedexex](https://github.com/DylanRoth5/Pokedexex)
 
-Para esto tendran que encontrar la manera de que los servicios del servidor sean accesibles desde la aplicación cliente, y llamar al servidor desde el javascript de la pagina web.
+I could not get the pull to work and also could not get the svelte app to show the pokemons for some reason, plus there is a bug when i open `.svelte` files on vscode that it shows as if there's an error but they work just fine.
 
-Tengan en cuenta que son 2 aplicaciones separadas, corriendo en puertos distintos.
+Finished the Vite + React app!🎉 But unfortunately the client stopped working for no reason maybe i changed something but i can't find what it is 😵.
 
-## Tareas
-* Leer y entender como funciona la aplicación servidor
-* Añadir alguna manera a la aplicación servidor para que pueda comunicarse con una aplicación cliente usando json
-* Añadir la funcionalidad necesaria a la aplicación cliente para que pueda comunicarse con el servidor y ser interactiva
-* Mandar un pull request con los cambios realizados
+The plan is get back to work on these on the weekend since i have a lot to cach up to this week on other subjects 😩.
 
-## Fecha de entrega
-* Lunes 1 de abril a las 23:59
+## How to Run
+1. `cd server`
+2. Run server: `npm run dev`
+3. cd to the frontend you want to try: `Client/React/Svelte`
+4. Run front-end: `npm run dev`
+
+Hope you have a Good Day! 😊
