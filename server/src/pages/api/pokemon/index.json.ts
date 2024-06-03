@@ -1,9 +1,9 @@
-import type { APIRoute } from "astro"
-import { addPokemon, getPokemonList } from "../../../services/pokemon"
+import type { APIContext, APIRoute } from "astro"
+import { addPokemon, getPokemonList, type Pokemon } from "../../../services/pokemon"
 
 export const GET: APIRoute = async (context) => {
-  const page = parseInt(context.url.searchParams.get('page') ?? '1', 10)
-  return new Response(JSON.stringify(await getPokemonList(page)), {
+  const pokemonList = await getPokemonList();
+  return new Response(JSON.stringify({pokemonList}), {
     headers: {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -11,15 +11,18 @@ export const GET: APIRoute = async (context) => {
   })
 }
 
-export const POST: APIRoute = async (context) => {
-  const pokemon = await context.request.json()
-
-  await addPokemon(pokemon)
-
-  return new Response(JSON.stringify(pokemon), {
+export const POST: APIRoute = async (context: APIContext) => {
+  try{
+    const newPokemon = await context.request.json()
+    addPokemon(newPokemon)
+    return new Response(JSON.stringify({}), {
     headers: {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-    }
-  })
+      }
+    })
+  }
+  catch( e ){
+    return new Response(JSON.stringify({}))
+  };
 }
