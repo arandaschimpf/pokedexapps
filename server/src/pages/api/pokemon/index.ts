@@ -1,57 +1,44 @@
-// server/src/pages/api/pokemon/index.ts
-
 import type { APIRoute } from "astro";
-import { getPokemonList, addPokemon } from "../../../services/pokemon";
+import { addPokemon, findPokemonById, findPokemonByName } from "../../../services/pokemon";
+import { invalidInput, nameTooLong, nameTooShort, pokemonAlreadyExists } from "../../../helpers/errors";
 
-export const GET: APIRoute = async (context) => {
-  try {
-    const pokemonList = await getPokemonList();
-
-    return new Response(JSON.stringify(pokemonList), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
-  } catch (error: any) { // Aquí indicamos que "error" puede ser de tipo "any"
-    console.error('Error obteniendo la lista de Pokémon:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+function handleError(error: string, body?: Record<string, any>) {
+  const headers = new Headers()
+  headers.append('Location', '/')
+  headers.append('Set-Cookie', `error=${error}; SameSite=Strict; Path=/; Max-Age=1`)
+  if (body) {
+    headers.append('Set-Cookie', `body=${JSON.stringify(body)}; SameSite=Strict; Path=/; Max-Age=1`)
   }
-};
+  return new Response(null, {
+    status: 302,
+    headers: headers
+  })
+}
 
 export const POST: APIRoute = async (context) => {
-  try {
-    const data = await context.request.formData();
-    const id = parseInt(data.get('id') as string, 10);
-    const name = data.get('name') as string;
+  const data = await context.request.formData()
 
-    if (!id || !name) {
-      throw new Error('Invalid input');
-    }
+  const id = parseInt(data.get('id') as string)
+  const name = data.get('name') as string
 
-    const pokemon = { id, name };
-    await addPokemon(pokemon);
-
-    return new Response(JSON.stringify(pokemon), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
-  } catch (error: any) { // Aquí indicamos que "error" puede ser de tipo "any"
-    console.error('Error adding Pokemon:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+  if (!id || !name) {
+    return handleError(invalidInput, { id, name })
   }
-};
+
+  if (name.length > 30) {
+    return handleError(nameTooLong, { id, name })
+  }
+
+  if (name.length < 3) {
+    return handleError(nameTooShort, { id, name })
+  }
+
+  if (await findPokemonById(id) || await findPokemonByName(name)) {
+    return handleError(pokemonAlreadyExists, { id, name })
+  }
+
+  const pokemon = { id, name }
+  await addPokemon(pokemon)
+
+  return context.redirect('/')
+}
