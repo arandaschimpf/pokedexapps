@@ -1,27 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokedex</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <main class="container mx-auto flex flex-col">
-		<h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
-		<form action="/api/pokemon" method="post">
-			<h2 class="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
-			<input type="number" name="id" placeholder="ID" class="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<input type="text" name="name" placeholder="Name" class="my-1 w-full p-2 border border-gray-300 rounded-lg" />
-			<button type="submit" class="w-full p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-red-700">Agregar</button>
-		</form>
-		<ul class="mt-4 border-4 border-red-700">
-			<li class="flex items-center justify-between border-b border-gray-300 p-2 bg-red-700">
-				<span class="text-lg text-white font-extrabold w-1/3">ID</span>
-				<span class="text-lg text-white font-extrabold w-1/3 text-center">Name</span>
-				<span class="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
-			</li>
-		</ul>
-	</main>
+    <main class="container mx-auto flex flex-col">
+        
+        <h1 class="text-5xl text-red-600 font-extrabold text-center">Pokedex</h1>
+        
+        
+        <form action="http://localhost:4321/api/pokemon" method="post" id="postPokemon">
+            <h2 class="text-2xl text-red-700 font-bold">Agregar nuevo pokemon</h2>
+            
+            <input type="number" name="id" placeholder="ID" class="my-1 w-full p-2 border border-gray-300 rounded-lg">
+            
+            <input type="text" name="name" placeholder="Name" class="my-1 w-full p-2 border border-gray-300 rounded-lg">
+            
+            <button type="submit" class="w-full p-2 bg-red-600 text-white rounded-lg mt-2 font-bold uppercase duration-200 hover:bg-red-700">
+                Agregar
+            </button>
+        </form>
+        
+
+        <ul class="mt-4 border-4 border-red-700" id="pokemonList">
+            
+            <li class="flex items-center justify-between border-b border-gray-300 p-2 bg-red-700">
+                <span class="text-lg text-white font-extrabold w-1/3">ID</span>
+                <span class="text-lg text-white font-extrabold w-1/3 text-center">Name</span>
+                <span class="text-lg text-white font-extrabold w-1/3 text-right">DELETE</span>
+            </li>
+        </ul>
+    </main>
+
+    
+    <script>
+        // Elemento donde se insertarán los pokemons
+        const ul_div = document.getElementById("pokemonList");
+
+        // Función para crear un elemento de lista de pokemon
+        function createListElement(id, name) {
+            let content = `
+                <li class="flex items-center justify-between border-b border-gray-300 p-2">
+                    <span class="text-lg text-red-600 font-bold w-1/3">${id}</span>
+                    <span class="text-lg text-red-600 font-bold w-1/3 text-center">${name}</span>
+                    <form action="http://localhost:4321/api/pokemon/${id}" method="post" class="w-1/3 text-right">
+                        <button type="submit" class="font-bold hover:font-extrabold">X</button>
+                    </form>
+                </li>`;
+            ul_div.innerHTML += content;
+        }
+
+        // Función para obtener los pokemons y mostrarlos en la lista
+        async function getPokemons() {
+            const response = await fetch("http://localhost:4321/api/pokemon", {
+                method: "get",
+            });
+            const PokemonArray = await response.json();
+            PokemonArray.forEach((element) => {
+                createListElement(element.id, element.name);
+            });
+        }
+
+        // Se llama a getPokemons al cargar la página y después de agregar un pokemon
+        getPokemons();
+
+        document.getElementById("postPokemon").addEventListener("submit", () => getPokemons());
+    </script>
 </body>
 </html>
