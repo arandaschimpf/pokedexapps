@@ -13,7 +13,7 @@ export const GET: APIRoute = async (context) => {
 
 export const POST: APIRoute = async (context) => {
   const pokemon = await context.request.json()
-
+  console.log(pokemon.name)
   await addPokemon(pokemon)
 
   return new Response(JSON.stringify(pokemon), {
